@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-19 11:12:23
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-19 18:08:45
+* @Last Modified time: 2017-09-20 15:56:06
 */
 
 export default async function (task) {
@@ -18,8 +18,8 @@ export async function bin (task, opts) {
 }
 
 export async function copy (task) {
-  await task.source(['index.js', 'utils.js', 'app.js']).target('dist', {mode: '0755'});
-  await task.source(['lib/**']).target('dist/lib');
+  await task.source(['index.js', 'utils.js']).target('dist', {mode: '0755'});
+  await task.source(['app/**']).target('dist/app');
 }
 
 export async function release (task) {

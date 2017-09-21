@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-18 17:36:15
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-19 20:13:55
+* @Last Modified time: 2017-09-20 16:33:05
 */
 
 const webpack = require('webpack');
@@ -58,15 +58,6 @@ function getPages(dir) {
 }
 
 /**
- * require path
- * @param  {string} path 路径
- * @return {}      
- */
-function relativeResolve(path) {
-  return require(path);
-}
-
-/**
  * webpack plugins
  * @type {Array}
  */
@@ -79,21 +70,25 @@ let plugins = [
     filename: 'vendor.[hash:8].js',
     minChunks: 2
   }),
-  new webpack.HotModuleReplacementPlugin(),
 ];
 
-export default function createCompiler ({dev = false}) {
-  // getPages(opts.dir);
+export default function createCompiler (opts) {
+  if (opts.dev) {
+    plugins.push(
+      new webpack.HotModuleReplacementPlugin(),
+    )
+  }
+
   plugins = plugins.concat([
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(dev ? 'development' : 'production')
+      'process.env.NODE_ENV': JSON.stringify(opts.dev ? 'development' : 'production')
     }),
     new PagesPlugin()
   ]);
 
   let webpackConfig = {
     entry: {
-      main: [require.resolve('../app')]
+      main: resolve(opts.buildDir, 'app')
     },
     output: {
         path: resolve('./dist/'),
