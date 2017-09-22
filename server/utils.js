@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-20 16:00:05
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-20 17:19:13
+* @Last Modified time: 2017-09-22 11:25:34
 */
 
 import { resolve, sep, relative } from "path";
@@ -97,7 +97,8 @@ export function createRoutes (files, srcDir) {
 	  parent.push(route);
 	  // 排序
 	})
-	
+
+
   return cleanChildrenRoutes(routes)
 }
 
@@ -145,6 +146,10 @@ export function cleanChildrenRoutes (routes, isChild = false) {
     }
   })
   return routes
+}
+
+export function sequence (tasks, fn) {
+  return tasks.reduce((promise, task) => promise.then(() => fn(task)), Promise.resolve())
 }
 
 export function wChunk (p = '') {
