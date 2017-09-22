@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-20 15:05:33
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-22 11:31:55
+* @Last Modified time: 2017-09-22 12:27:33
 */
 
 import _ from "lodash";
@@ -59,7 +59,6 @@ export default {
 				const templateOption = {
 					imports: {
 						relativeToBuild: relativeToBuild,
-						configRoutes: opts.routes,
 						hash,
 	          r,
 	          wp,

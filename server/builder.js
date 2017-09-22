@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-21 10:38:02
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-22 11:26:02
+* @Last Modified time: 2017-09-22 12:49:33
 */
 
 import Tappable from "tappable";
@@ -249,14 +249,15 @@ export default class Bulder extends Tappable {
       stats: false,
       // 根据配置修改
       historyApiFallback: true,
-      hot: true
+      hot: true,
+      // proxy
+      
     });
 
+    server.use(this.webpackDevMiddleware);
     server.use(this.webpackHotMiddleware);
 
-    server.listen(this.options.port, '127.0.0.1', () => {
-      console.log('Starting server on http://localhost:8080');
-    });
+    server.listen(this.options.port, '127.0.0.1', () => {});
 
     // Start watching files
     this.watchFiles()

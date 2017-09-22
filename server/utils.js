@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-20 16:00:05
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-22 11:25:34
+* @Last Modified time: 2017-09-22 18:29:24
 */
 
 import { resolve, sep, relative } from "path";
@@ -61,19 +61,12 @@ export function relativeTo () {
 }
 
 export function createRoutes (files, srcDir) {
-	let pages = {};
 	let routes = [];
+  let parent = routes;
 
 	files.forEach((file) => {
     let folders = file.replace(/^pages/, '').replace(/\.vue$/, '').replace(/\/{2,}/g, '/').split('/').slice(1);
-
-	  let route = pages.index || {
-	  	name: "",
-	  	path: "",
-	  	component: r(srcDir, file),
-	  }
-
-	  let parent = routes;
+	  let route = { name: "", path: "", component: r(srcDir, file) }
 
 	  folders.forEach((key, i) => {
 	    route.name = route.name ? route.name + '-' + key : key;
@@ -93,12 +86,10 @@ export function createRoutes (files, srcDir) {
 	    	}
 	    }
 	  })
-
 	  parent.push(route);
-	  // 排序
 	})
 
-
+  console.log('routs', routes);
   return cleanChildrenRoutes(routes)
 }
 

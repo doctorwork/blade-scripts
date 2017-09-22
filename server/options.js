@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-20 11:52:45
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-21 17:33:59
+* @Last Modified time: 2017-09-22 11:44:10
 */
 import {join, resolve} from "path";
 import {existsSync} from "fs";
@@ -45,10 +45,16 @@ const _default = {
 	}
 };
 
+function loadWebConfig() {
+  const conf = require(resolve('.', 'web.config.js'));
+  return conf;
+}
+
+
 export default {
 	create (_opts) {
-
-		const opts = Object.assign({}, _opts);
+    const _conf = loadWebConfig();
+		const opts = Object.assign({}, _opts, _conf);
 
 		_.defaultsDeep(opts, _default);
 		

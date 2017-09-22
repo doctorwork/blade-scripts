@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-18 18:36:03
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-22 10:55:30
+* @Last Modified time: 2017-09-22 14:51:04
 */
 
 const WebpackDevServer = require('webpack-dev-server');
@@ -34,7 +34,11 @@ function getPages(dir) {
  */
 let plugins = [
   new webpack.IgnorePlugin(/(precomputed)/, /node_modules.+(elliptic)/),
-  new FriendlyErrorsWebpackPlugin(),
+  new FriendlyErrorsWebpackPlugin({
+    compilationSuccessInfo: {
+      messages: ['up and running here http://localhost:8080']
+    },
+  }),
   new ProgressBarPlugin(),
   new webpack.optimize.CommonsChunkPlugin({
     name: 'commons',
@@ -89,11 +93,10 @@ export default function baseConfig () {
     loaders: ['style-loader', 'css-loader', 'postcss-loader']
   }, {
       test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-      loader: 'file-loader',
-      options: {
-          limit: 10000,
-          name: 'imgs/[hash:7].[ext]'
-      }
+      loaders: [
+        'file-loader?limit=10000&name=imgs/[hash:7].[ext]',
+        'image-webpack-loader'
+      ]
   }]);
 
   let webpackConfig = {
