@@ -2,11 +2,12 @@
 * @Author: insane.luojie
 * @Date:   2017-09-20 11:52:45
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-22 11:44:10
+* @Last Modified time: 2017-09-25 20:59:54
 */
 import {join, resolve} from "path";
 import {existsSync} from "fs";
 import _ from "lodash";
+import { isUrl, isPureObject } from './utils'
 
 const _default = {
   mode: 'spa',
@@ -17,7 +18,8 @@ const _default = {
   build: {
   	publicPath: "/",
   	filename: "",
-  	chunkFilename: ""
+  	chunkFilename: "",
+    cssSourceMap: false
   },
   appTemplatePath: "",
   babel: {
@@ -61,8 +63,32 @@ export default {
 		// 设置根目录
 		opts.rootDir = _opts.rootDir ? _opts.rootDir : process.cwd();
 		opts.srcDir = _opts.srcDir ? join(opts.rootDir, _opts.srcDir) : opts.rootDir;
+     // Postcss
 
-		// 设置title
+    opts.build.postcss = {
+      sourceMap: opts.build.cssSourceMap,
+      plugins: {
+        // https://github.com/postcss/postcss-import
+        'postcss-import': {
+          root: opts.rootDir,
+          path: [
+            opts.srcDir,
+            opts.rootDir,
+            // opts.modulesDir
+          ]
+        },
+        // https://github.com/postcss/postcss-url
+        'postcss-url': {},
+        // http://cssnext.io/postcss
+        'postcss-cssnext': {}
+      }
+    }
+
+    opts.build.postcss.plugins = Object.keys(opts.build.postcss.plugins)
+      .map((p) => {
+        const plugin = require(p);
+        return plugin(opts.build.postcss.plugins[p]);
+      })
 
 		// 获取 babel, eslint 设置
     opts.babelOptions = _.defaults(opts.build.babel, {

@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-20 16:00:05
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-22 18:29:24
+* @Last Modified time: 2017-09-25 20:33:25
 */
 
 import { resolve, sep, relative } from "path";
@@ -12,6 +12,14 @@ const reqSep = /\//g
 const sysSep = _.escapeRegExp(sep)
 const normalize = string => string.replace(reqSep, sysSep)
 export const isWindows = /^win/.test(process.platform)
+
+export function isUrl (url) {
+  return (url.indexOf('http') === 0 || url.indexOf('//') === 0)
+}
+
+export function isPureObject (o) {
+  return !Array.isArray(o) && typeof o === 'object'
+}
 
 /**
  * 路径替换
@@ -60,20 +68,28 @@ export function relativeTo () {
   return wp(rp)
 }
 
+function split_path(file) {
+  return file.replace(/^pages/, '').replace(/\.vue$/, '').replace(/\/{2,}/g, '/').split('/').slice(1);
+}
+
 export function createRoutes (files, srcDir) {
 	let routes = [];
-  let parent = routes;
+
+  files = files.sort((a, b) => {
+      return split_path(a).length > split_path(b).length;
+    })
 
 	files.forEach((file) => {
-    let folders = file.replace(/^pages/, '').replace(/\.vue$/, '').replace(/\/{2,}/g, '/').split('/').slice(1);
+    // 只解析两层目录 
+    let folders = split_path(file);
 	  let route = { name: "", path: "", component: r(srcDir, file) }
+    let parent = routes
 
 	  folders.forEach((key, i) => {
 	    route.name = route.name ? route.name + '-' + key : key;
       route.chunkName = file.replace(/\.vue$/, '');
 
 	    let child = _.find(parent, {name: route.name})
-
 	    if (child) {
 	    	child.children = child.children || []
 	    	parent = child.children;
@@ -89,7 +105,7 @@ export function createRoutes (files, srcDir) {
 	  parent.push(route);
 	})
 
-  console.log('routs', routes);
+  return routes;
   return cleanChildrenRoutes(routes)
 }
 

@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-18 18:36:03
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-22 14:51:04
+* @Last Modified time: 2017-09-25 20:42:04
 */
 
 const WebpackDevServer = require('webpack-dev-server');
@@ -71,6 +71,11 @@ export default function baseConfig () {
    */
   let rules = [];
 
+  let postcssLoader = {
+    loader: 'postcss-loader',
+    options: this.options.build.postcss
+  }
+
   Array.prototype.push.apply(rules, [{
       test: /\.json$/,
       loader: 'json-loader'
@@ -90,7 +95,10 @@ export default function baseConfig () {
     options: this.vueLoader()
   }, {
     test: /\.css$/,
-    loaders: ['style-loader', 'css-loader', 'postcss-loader']
+    loaders: ['file-loader', 'css-loader', postcssLoader]
+  }, {
+    test: /\.less$/,
+    loaders: ['file-loader', 'css-loader', postcssLoader, 'less-loader']
   }, {
       test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
       loaders: [
@@ -118,6 +126,7 @@ export default function baseConfig () {
       extensions: ['.js', '.vue', '.json', '.less', '.ts'],
       alias: {
         'vue$': 'vue/dist/vue.esm.js', // 'vue/dist/vue.common.js' for webpack 1,
+        'static': join(this.options.srcDir, 'static')
       }
     },
     resolveLoader: {

@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-18 16:40:02
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-22 11:13:16
+* @Last Modified time: 2017-09-25 15:07:03
 */
 
 const fs = require('fs');
@@ -11,7 +11,6 @@ import Builder from "./builder";
 const express = require("express");
 const webpackDevServer = require("webpack-dev-server");
 import chokidar from "chokidar";
-import createCompiler from "./webpack";
 import _ from 'lodash';
 import { r } from "./utils";
 /**

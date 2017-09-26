@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-18 10:14:20
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-22 11:54:39
+* @Last Modified time: 2017-09-25 15:11:23
 */
 
 import Vue from 'vue'
@@ -18,7 +18,7 @@ function recursiveRoutes(routes, tab, components) {
     route._name = '_' + hash(route.component)
     components.push({ _name: route._name, component: route.component, name: route.name, chunkName: route.chunkName })
     res += tab + '{\n'
-    res += tab + '\tpath: ' + route.path + ',\n'
+    res += tab + '\tpath: ' + JSON.stringify(route.path) + ',\n'
     res += tab + '\tcomponent: ' + route._name
     res += (route.name) ? ',\n\t' + tab + 'name: ' + JSON.stringify(route.name) : ''
     res += (route.children) ? ',\n\t' + tab + 'children: [\n' + recursiveRoutes(routes[i].children, tab + '\t\t', components) + '\n\t' + tab + ']' : ''
