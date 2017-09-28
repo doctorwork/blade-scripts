@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-18 10:14:20
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-25 15:11:23
+* @Last Modified time: 2017-09-28 14:51:30
 */
 
 import Vue from 'vue'
@@ -16,6 +16,8 @@ function recursiveRoutes(routes, tab, components) {
   let res = ''
   routes.forEach((route, i) => {
     route._name = '_' + hash(route.component)
+    route.path = opts.routes[route.name] ? opts.routes[route.name] : route.path;
+    
     components.push({ _name: route._name, component: route.component, name: route.name, chunkName: route.chunkName })
     res += tab + '{\n'
     res += tab + '\tpath: ' + JSON.stringify(route.path) + ',\n'
@@ -57,6 +59,8 @@ const scrollBehavior = (to, from, savedPosition) => {
   }
 }
 <% } %>
+
+// 路由插件处理
 
 export function createRouter () {
   return new Router({

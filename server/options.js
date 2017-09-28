@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-20 11:52:45
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-25 20:59:54
+* @Last Modified time: 2017-09-28 15:47:36
 */
 import {join, resolve} from "path";
 import {existsSync} from "fs";
@@ -22,6 +22,7 @@ const _default = {
     cssSourceMap: false
   },
   appTemplatePath: "",
+  runtime: {},
   babel: {
   	presets: ['env']
   },
@@ -63,7 +64,7 @@ export default {
 		// 设置根目录
 		opts.rootDir = _opts.rootDir ? _opts.rootDir : process.cwd();
 		opts.srcDir = _opts.srcDir ? join(opts.rootDir, _opts.srcDir) : opts.rootDir;
-     // Postcss
+    // Postcss
 
     opts.build.postcss = {
       sourceMap: opts.build.cssSourceMap,
@@ -74,7 +75,6 @@ export default {
           path: [
             opts.srcDir,
             opts.rootDir,
-            // opts.modulesDir
           ]
         },
         // https://github.com/postcss/postcss-url

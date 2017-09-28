@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-20 16:00:05
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-25 20:33:25
+* @Last Modified time: 2017-09-26 10:35:08
 */
 
 import { resolve, sep, relative } from "path";
@@ -105,7 +105,6 @@ export function createRoutes (files, srcDir) {
 	  parent.push(route);
 	})
 
-  return routes;
   return cleanChildrenRoutes(routes)
 }
 
@@ -165,4 +164,8 @@ export function wChunk (p = '') {
     return p.replace(/\//g, '\\\\')
   }
   return p
+}
+
+export function urlJoin () {
+  return [].slice.call(arguments).join('/').replace(/\/+/g, '/').replace(':/', '://')
 }

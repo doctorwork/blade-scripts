@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-21 10:38:02
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-25 15:09:33
+* @Last Modified time: 2017-09-28 10:29:14
 */
 
 import Tappable from "tappable";
@@ -45,6 +45,8 @@ export default class Bulder extends Tappable {
     this.compiler = null
     this.webpackDevMiddleware = null
     this.webpackHotMiddleware = null
+
+    this._env = process.env.NODE_ENV;
 
         // Mute stats on dev
     this.webpackStats = this.options.dev ? false : {

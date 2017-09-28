@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-20 15:05:33
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-25 15:32:34
+* @Last Modified time: 2017-09-28 15:47:25
 */
 
 import _ from "lodash";
@@ -16,14 +16,37 @@ import debug from "debug";
 const files = [
 	"app.js",
 	"router.js",
+	"components.js",
+	"plugins.js",
 	"store.js",
 	"views/app.html"
 ]
 
+/**
+ * 获取 route 文件
+ */
 async function getRoutes(opts) {
 	let files = glob.sync('pages/**/*.vue', { cwd: opts.srcDir });
   opts.router.routes = createRoutes(files, opts.srcDir);
 }
+
+/**
+ * 获取module 文件
+ */
+async function getModules(opts) {
+	let files = glob.sync('modules/*/index.vue', { cwd: opts.srcDir });
+	//
+	opts.runtime.modules = [];
+}
+
+/**
+ * 获取components 文件
+ */
+async function getComponents(opts) {
+	let files = glob.sync('components/*/index.vue', { cwd: opts.srcDir });
+	opts.runtime.components = [];
+}
+
 
 export default {
 	async generate (opts) {
@@ -61,6 +84,7 @@ export default {
 						relativeToBuild: relativeToBuild,
 						hash,
 	          r,
+	          opts,
 	          wp,
 	          wChunk,
 					}

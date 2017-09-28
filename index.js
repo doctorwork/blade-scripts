@@ -4,7 +4,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-02 00:37:06
  * @Last Modified by:   insane.luojie
- * @Last Modified time: 2017-09-19 11:11:11
+ * @Last Modified time: 2017-09-27 10:40:43
  */
 
 'use strict';
@@ -32,7 +32,6 @@ if (!existsSync(join(dir, 'pages'))) {
 switch (script) {
     case 'build':
     case 'dev':
-    case 'start':
         {
             const result = spawn.sync(
                 'node', [require.resolve('./tasks/' + script)].concat(args), { stdio: 'inherit' }
