@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-20 11:52:45
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-28 15:47:36
+* @Last Modified time: 2017-09-28 18:47:10
 */
 import {join, resolve} from "path";
 import {existsSync} from "fs";
@@ -24,7 +24,8 @@ const _default = {
   appTemplatePath: "",
   runtime: {},
   babel: {
-  	presets: ['env']
+  	presets: ['env'],
+    plugins: [require.resolve('babel-plugin-transform-vue-jsx')]
   },
   eslint: {
 
@@ -60,7 +61,9 @@ export default {
 		const opts = Object.assign({}, _opts, _conf);
 
 		_.defaultsDeep(opts, _default);
-		
+
+    // 如果native打包，强制使用 router.mode = 'hash'; todo
+
 		// 设置根目录
 		opts.rootDir = _opts.rootDir ? _opts.rootDir : process.cwd();
 		opts.srcDir = _opts.srcDir ? join(opts.rootDir, _opts.srcDir) : opts.rootDir;
@@ -91,13 +94,13 @@ export default {
       })
 
 		// 获取 babel, eslint 设置
-    opts.babelOptions = _.defaults(opts.build.babel, {
+    opts.babelOptions = _.defaults(opts.babel, {
       babelrc: false,
       cacheDirectory: !!opts.dev
     })
     if (!opts.babelrc && !opts.presets) {
       opts.babelOptions.presets = [
-        require.resolve('babel-preset-env')
+        require.resolve('babel-preset-vue-app')
       ]
     }
 		

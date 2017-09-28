@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-18 16:40:02
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-28 11:18:05
+* @Last Modified time: 2017-09-28 18:14:48
 */
 
 const fs = require('fs');
@@ -20,11 +20,9 @@ import { r } from "./utils";
  */
 function startWatcher () {
 	const patterns = [
-    r(this.options.srcDir, 'layouts'),
     r(this.options.srcDir, 'store'),
-    r(this.options.srcDir, 'middleware'),
-    r(this.options.srcDir, 'layouts/*.vue'),
-    r(this.options.srcDir, 'layouts/**/*.vue'),
+    r(this.options.srcDir, 'modules/**/index.vue'),
+    r(this.options.srcDir, 'components/**/index.vue'),
     r(this.options.srcDir, 'pages/**/*.vue')
   ]
 

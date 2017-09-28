@@ -2,25 +2,24 @@
 * @Author: insane.luojie
 * @Date:   2017-09-26 11:55:34
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-28 15:33:50
+* @Last Modified time: 2017-09-28 18:12:59
 */
 
-<%
-	components.forEach((item) => {
-	 
-%>
-const <%= item.name %> = import('<%= relativeToBuild(item.path) %>');
-export <%= item.name %>;
+const components = {};
+const modules = {};
 
-<%
-	});
-%>
+<% components.forEach((item) => { %>components['<%= item.name %>'] = import('<%= relativeToBuild(item.path) %>'); <% }); %>
+<% modules.forEach((item) => { %>modules['<%= item.name %>'] = import('<%= relativeToBuild(item.path) %>'); <% }); %>
 
-export {
-	<%= 
-		components.map((item) => {
-				return item.name
-			})
-			.join(",");
-	%>
+export default {
+	install (Vue) {
+		// 注册 components
+		Object.keys(components).forEach((item) => {
+		  Vue.component(item, components[item]);
+		});
+
+		Object.keys(modules).forEach((item) => {
+		  Vue.component(item, modules[item]);
+		})
+	}
 }

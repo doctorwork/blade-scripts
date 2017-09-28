@@ -2,11 +2,11 @@
 * @Author: insane.luojie
 * @Date:   2017-09-27 10:16:06
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-27 11:22:55
+* @Last Modified time: 2017-09-28 18:47:32
 */
 
 export function createLoaders() {
-	   /**
+   /**
    * loader rules
    * @type {}
    */
@@ -26,10 +26,7 @@ export function createLoaders() {
     exclude (str) {
       return /node_modules/.test(str)
     },
-    options: {
-      babelrc: false,
-      presets: ['babel-preset-vue-app'].map(require.resolve)
-    }
+    options: this.options.babelOptions
   }, {
     test: /\.vue$/,
     loader: 'vue-loader',

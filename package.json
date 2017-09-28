@@ -1,6 +1,6 @@
 {
   "name": "blade-scripts",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "",
   "main": "./dist/index.js",
   "bin": {
@@ -16,15 +16,18 @@
     "dist",
     "index.js"
   ],
-  "author": "",
+  "author": "luojie",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.16.2",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.0",
+    "babel-helper-vue-jsx-merge-props": "^2.0.2",
     "babel-loader": "^7.1.2",
+    "babel-plugin-syntax-jsx": "^6.18.0",
     "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-plugin-transform-vue-jsx": "^3.5.0",
     "babel-preset-vue-app": "^1.3.0",
     "babel-runtime": "^6.26.0",
     "chokidar": "^1.7.0",

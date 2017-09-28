@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-28 10:49:32
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-28 12:47:03
+* @Last Modified time: 2017-09-28 18:02:51
 */
 import _ from 'lodash';
 import chokidar from 'chokidar';
@@ -85,24 +85,11 @@ export default class Render {
 			publicPath: configs.base.output.publicPath
 		});
 
-
 		this.webpackHotMiddleware = require('webpack-hot-middleware')(this.compiler, {
 		 quiet: true
 		});
 
 		this.server.use(this.webpackHotMiddleware);
-		return
-		// this.webpackDevMiddleware = require('webpack-dev-middleware')(this.compiler, {
-		//   publicPath: configs.base.output.publicPath,
-		//   quiet: true
-		// })
-
-		// this.server.use(this.webpackDevMiddleware);
-
-		this.webpackDevMiddleware.waitUntilValid(() => {
-			 // 打开地址
-			 
-		})
 	}
 
 	// 监控文件变化

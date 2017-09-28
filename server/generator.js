@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-20 15:05:33
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-28 15:47:25
+* @Last Modified time: 2017-09-28 18:10:20
 */
 
 import _ from "lodash";
@@ -44,7 +44,21 @@ async function getModules(opts) {
  */
 async function getComponents(opts) {
 	let files = glob.sync('components/*/index.vue', { cwd: opts.srcDir });
-	opts.runtime.components = [];
+	opts.runtime.components = files.map((item) => {
+		/components\/(.+)\/index/.exec(item);
+		return {
+			name: RegExp.$1,
+			path: item
+		}
+	});
+}
+
+/**
+ * 获取components 文件
+ */
+async function getPlugins(opts) {
+	let files = glob.sync('plugins/*/index.vue', { cwd: opts.srcDir });
+	opts.runtime.plugins = [];
 }
 
 
@@ -52,6 +66,11 @@ export default {
 	async generate (opts) {
 		debug("> 生成路由...");
 		getRoutes(opts);
+
+		getModules(opts);
+		getComponents(opts);
+		getPlugins(opts);
+
 		const context = {
 			opts,
 			dev: opts.dev,
@@ -84,6 +103,9 @@ export default {
 						relativeToBuild: relativeToBuild,
 						hash,
 	          r,
+	          plugins: opts.runtime.plugins,
+	          components: opts.runtime.components,
+	          modules: opts.runtime.modules,
 	          opts,
 	          wp,
 	          wChunk,
