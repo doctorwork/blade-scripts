@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-28 10:49:32
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-28 18:02:51
+* @Last Modified time: 2017-09-29 11:57:23
 */
 import _ from 'lodash';
 import chokidar from 'chokidar';
@@ -26,9 +26,8 @@ import Generator from "./generator";
 
 export default class Render {
 
-	constructor() {
-    this.options = Options.create({});
-
+	constructor(_opts) {
+    this.options = Options.create(_opts);
     // Fields that set on build
     this.compiler = null
     this.compilers = {};
@@ -60,29 +59,49 @@ export default class Render {
 		// 配置proxy
 	}
 
-	/**
-	 * 初始化服务器
-	 * @return {[type]} [description]
-	 */
-	makeServer () {
+	makeConfig (build) {
 		// 初始化 app compiler
 		const configs = [];
 		[webpackConfig].forEach((item) => {
 		// [webpackConfig, dllWebpackConfig].forEach((item) => {
 			const config = item.call(this);
 			configs[config.name] = config;
-		  this.compilers[config.name] = webpack(config);
-		})
-
+			if (!build) {
+			  this.compilers[config.name] = webpack(config);
+			}
+		});
 		this.compiler = this.compilers.base;
+		this.configs = configs;
 
+		if (build) {
+			return webpack(Object.keys(this.configs).map((item) => {
+				return this.configs[item]
+			}), (err, stats) => {
+				if (err) throw err
+		    process.stdout.write(stats.toString({
+		      colors: true,
+		      modules: false,
+		      children: false,
+		      chunks: false,
+		      chunkModules: false
+		    }) + '\n\n')
+			});
+		}
+	}
+
+	/**
+	 * 初始化服务器
+	 * @return {[type]} [description]
+	 */
+	makeServer () {
+		this.makeConfig();
 		this.server = new webpackDevServer(this.compiler, {
 			hot: true,
 			stats: false,
 			historyApiFallback: {
-				index: configs.base.output.publicPath
+				index: this.configs.base.output.publicPath
 			},
-			publicPath: configs.base.output.publicPath
+			publicPath: this.configs.base.output.publicPath
 		});
 
 		this.webpackHotMiddleware = require('webpack-hot-middleware')(this.compiler, {
@@ -101,6 +120,7 @@ export default class Render {
 	async build () {
 		await this.collectFiles();
 
+		this.makeConfig(true);
 	}
 
 	// 开启服务

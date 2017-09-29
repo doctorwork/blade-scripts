@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-18 18:36:03
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-28 12:07:24
+* @Last Modified time: 2017-09-29 11:49:33
 */
 
 const WebpackDevServer = require('webpack-dev-server');
@@ -22,11 +22,6 @@ import {createLoaders} from "./loader";
  */
 let plugins = [
   new webpack.IgnorePlugin(/(precomputed)/, /node_modules.+(elliptic)/),
-  new FriendlyErrorsWebpackPlugin({
-    compilationSuccessInfo: {
-      messages: ['up and running here http://localhost:8080']
-    },
-  }),
   new ProgressBarPlugin(),
   new webpack.optimize.CommonsChunkPlugin({
     name: 'commons',
@@ -45,11 +40,20 @@ export default function baseConfig () {
     chunksSortMode: 'dependency'
   }, { base: this.options.router.base || '/' });
 
+  const envVars = Object.assign(this.options.env.default, this.options.env[process.env.NODE_ENV]);
+
   plugins = plugins.concat([
     new HTMLPlugin(HTMLPluginConfig),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(this.options.dev ? 'development' : 'production')
-    }),
+    new webpack.DefinePlugin(Object.assign(
+      {
+        'process.env.NODE_ENV': JSON.stringify(this.options.dev ? 'development' : 'production')
+      }, 
+      ...Object.keys(envVars).map((item) => {
+        return {
+          [item]: JSON.stringify(envVars[item])
+        }
+      })
+    )),
     new PagesPlugin()
   ]);
 
@@ -99,6 +103,11 @@ export default function baseConfig () {
 
     webpackConfig.plugins.push(
       new webpack.HotModuleReplacementPlugin(),
+      new FriendlyErrorsWebpackPlugin({
+        compilationSuccessInfo: {
+          messages: [`up and running here http://127.0.0.1:${this.options.port || 8080}${this.options.router.base}`]
+        },
+      }),
     )
   } else {
     webpackConfig.plugins.push(
@@ -115,6 +124,5 @@ export default function baseConfig () {
   }
 
   // 处理dll plugin
-  
   return webpackConfig;
 }

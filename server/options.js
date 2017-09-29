@@ -2,9 +2,9 @@
 * @Author: insane.luojie
 * @Date:   2017-09-20 11:52:45
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-28 18:47:10
+* @Last Modified time: 2017-09-29 10:35:33
 */
-import {join, resolve} from "path";
+import {join, resolve, sep} from "path";
 import {existsSync} from "fs";
 import _ from "lodash";
 import { isUrl, isPureObject } from './utils'
@@ -19,7 +19,8 @@ const _default = {
   	publicPath: "/",
   	filename: "",
   	chunkFilename: "",
-    cssSourceMap: false
+    cssSourceMap: false,
+    extractCSS: true
   },
   appTemplatePath: "",
   runtime: {},
@@ -30,6 +31,10 @@ const _default = {
   eslint: {
 
   },
+  css: [],
+  plugins: [],
+  // global resource
+  resources: [],
   tilte: "blade",
   watchers: {
     webpack: {
@@ -42,7 +47,6 @@ const _default = {
 	},
 	router: {
 		mode: "history",
-		base: "/",
 		linkActiveClass: "b-link-active",
 		linkExactActiveClass: "b-c-link-active",
 		fallback: false
@@ -67,8 +71,14 @@ export default {
 		// 设置根目录
 		opts.rootDir = _opts.rootDir ? _opts.rootDir : process.cwd();
 		opts.srcDir = _opts.srcDir ? join(opts.rootDir, _opts.srcDir) : opts.rootDir;
-    // Postcss
+    
+    // router base
+    if (!opts.router.base) {
+      let levels = opts.rootDir.split(sep);
+      opts.router.base = "/h5/" + levels[levels.length-1] + "/";
+    }
 
+    // Postcss
     opts.build.postcss = {
       sourceMap: opts.build.cssSourceMap,
       plugins: {

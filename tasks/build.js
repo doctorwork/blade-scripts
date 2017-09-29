@@ -2,12 +2,11 @@
 * @Author: insane.luojie
 * @Date:   2017-09-02 00:46:41
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-26 11:16:28
+* @Last Modified time: 2017-09-29 11:31:09
 */
+const Server = require("../server");
 
-process.env.BABEL_ENV = 'production';
-process.env.NODE_ENV = 'production';
+process.env.NODE_ENV = process.env.NODE_ENV || 'production';
+// 解析参数
 
-const dir = resolve('.');
-const opts = Options.create({dev: true});
-const server = new Server(opts, true);
+const server = new Server({dev: false});

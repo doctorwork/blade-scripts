@@ -12,6 +12,11 @@ export default function styleLoader (ext, loaders = [], isVueLoader = false) {
         sourceMap: this.options.build.cssSourceMap
       }
     }, loader)
+  }).concat({
+    loader: "sass-resources-loader",
+    options: {
+      resources: this.options.resources
+    }
   })
 
   // https://github.com/postcss/postcss-loader

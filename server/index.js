@@ -2,12 +2,12 @@
 * @Author: insane.luojie
 * @Date:   2017-09-18 16:40:02
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-28 18:14:48
+* @Last Modified time: 2017-09-29 11:33:39
 */
 
 const fs = require('fs');
 const chalk = require('chalk');
-import Builder from "./render";
+import Render from "./render";
 const express = require("express");
 const webpackDevServer = require("webpack-dev-server");
 import chokidar from "chokidar";
@@ -43,9 +43,11 @@ process.on('unhandledRejection', (reason, p) => {
     console.log('Reason: ' + reason, p);
 });
 
-module.exports = async function Server (opts, isBuild) {
-	const builder = new Builder();
-	await builder.start(isBuild);
-
-	// startWatcher.call(builder);
+module.exports = async function Server ({ dev }) {
+	const render = new Render({ dev });
+  if (dev) {
+    await render.start();
+  } else {
+    await render.build();
+  }
 }

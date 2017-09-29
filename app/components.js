@@ -2,14 +2,14 @@
 * @Author: insane.luojie
 * @Date:   2017-09-26 11:55:34
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-28 18:12:59
+* @Last Modified time: 2017-09-29 11:58:21
 */
 
 const components = {};
 const modules = {};
 
-<% components.forEach((item) => { %>components['<%= item.name %>'] = import('<%= relativeToBuild(item.path) %>'); <% }); %>
-<% modules.forEach((item) => { %>modules['<%= item.name %>'] = import('<%= relativeToBuild(item.path) %>'); <% }); %>
+<% components.forEach((item) => { %>components['<%= item.name %>'] = import '<%= relativeToBuild(item.path) %>'; <% }) %>
+<% modules.forEach((item) => { %>modules['<%= item.name %>'] = import '<%= relativeToBuild(item.path) %>'; <% }) %>
 
 export default {
 	install (Vue) {

@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-27 10:16:06
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-28 18:47:32
+* @Last Modified time: 2017-09-29 10:34:14
 */
 
 export function createLoaders() {
@@ -36,7 +36,12 @@ export function createLoaders() {
     loaders: ['file-loader', 'css-loader', postcssLoader]
   }, {
     test: /\.less$/,
-    loaders: ['file-loader', 'css-loader', postcssLoader, 'less-loader']
+    loaders: ['file-loader', 'css-loader', postcssLoader, 'less-loader', {
+      loader: "sass-resources-loader",
+      options: {
+        resources: this.options.resources
+      }
+    }]
   }, {
       test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
       loaders: [
