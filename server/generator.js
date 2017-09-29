@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-20 15:05:33
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-28 18:10:20
+* @Last Modified time: 2017-09-29 14:41:37
 */
 
 import _ from "lodash";
@@ -19,7 +19,8 @@ const files = [
 	"components.js",
 	"plugins.js",
 	"store.js",
-	"views/app.html"
+	"views/app.html",
+	"layouts/404.vue"
 ]
 
 /**

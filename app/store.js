@@ -9,7 +9,11 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 Vue.use(Vuex);
+let store = {};
 
-export default {
-	
-}
+<% if (opts.vuex) { %>
+import _store from "<%= opts.vuex %>";
+store = new Vuex.Store(_store)
+<% } %>
+
+export default store;

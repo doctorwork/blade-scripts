@@ -2,7 +2,7 @@
 * @Author: insane.luojie
 * @Date:   2017-09-19 11:12:23
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-20 15:56:06
+* @Last Modified time: 2017-09-29 14:38:16
 */
 
 export default async function (task) {
@@ -10,6 +10,7 @@ export default async function (task) {
   await task.start('build')
   await task.watch('tasks/*', 'bin')
   await task.watch('server/**/*.js', 'server')
+  await task.watch('app/**', 'copy')
 }
 
 export async function bin (task, opts) {

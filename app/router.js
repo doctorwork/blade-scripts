@@ -2,12 +2,14 @@
 * @Author: insane.luojie
 * @Date:   2017-09-18 10:14:20
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-28 14:51:30
+* @Last Modified time: 2017-09-29 14:36:35
 */
 
 import Vue from 'vue'
 import Router from 'vue-router'
-
+<% if(opts.plugins.route) { %>
+import beforeEachRoute from '<%= opts.plugins.route %>';
+<% } %>
 Vue.use(Router)
 
 <%
@@ -60,6 +62,18 @@ const scrollBehavior = (to, from, savedPosition) => {
 }
 <% } %>
 
+<% 
+  let _notFound = "";
+  let tab = '\t\t';
+  if(opts.views.notFound !== false) {
+    _notFound += '{\n'
+    _notFound += tab + '\nname: "notFound",'
+    _notFound += tab + '\npath: "*",'
+    _notFound += tab + '\ncomponent: require("'+ opts.views.notFound +'")'
+    _notFound += tab + '\n}'
+  }
+%>
+
 // 路由插件处理
 
 export function createRouter () {
@@ -70,8 +84,12 @@ export function createRouter () {
     linkExactActiveClass: '<%= router.linkExactActiveClass %>',
     scrollBehavior,
     routes: [
-<%= _routes %>
+      <%= _routes %>,
+      <%= _notFound %>
     ],
+    <% if(opts.plugins.route) { %>
+    beforeEach: beforeEachRoute
+    <% } %>
     fallback: <%= router.fallback %>
   })
 }

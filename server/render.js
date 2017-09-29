@@ -62,8 +62,8 @@ export default class Render {
 	makeConfig (build) {
 		// 初始化 app compiler
 		const configs = [];
-		[webpackConfig].forEach((item) => {
 		// [webpackConfig, dllWebpackConfig].forEach((item) => {
+		[webpackConfig].forEach((item) => {
 			const config = item.call(this);
 			configs[config.name] = config;
 			if (!build) {
@@ -78,13 +78,14 @@ export default class Render {
 				return this.configs[item]
 			}), (err, stats) => {
 				if (err) throw err
-		    process.stdout.write(stats.toString({
-		      colors: true,
-		      modules: false,
-		      children: false,
-		      chunks: false,
-		      chunkModules: false
-		    }) + '\n\n')
+				process.stdout.write(stats.toString({
+					chunks: false,
+					chunkModules: true,
+					colors: true,
+					errors: true,
+					// Add details to errors (like resolving log)
+					errorDetails: true,
+				}) + '\n\n')
 			});
 		}
 	}

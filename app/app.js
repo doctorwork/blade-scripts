@@ -2,11 +2,13 @@
 * @Author: insane.luojie
 * @Date:   2017-09-18 10:14:36
 * @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-29 10:26:40
+* @Last Modified time: 2017-09-29 14:45:49
 */
 import Vue from "vue";
 import {createRouter} from "./router";
-import store from "./store";
+<% if (opts.vuex) { %>
+import store from "<%= opts.vuex %>";
+<% } %>
 import InstallComponents from "./components";
 <% opts.css.forEach(item => { %>import "<%= item %>";<% }) %>
 
@@ -17,10 +19,11 @@ const router = createRouter();
 const app = new Vue({
     el: "#app",
     router,
+    <% if (opts.vuex) { %>
     store,
+    <% } %>
     watch: {
         '$route': function (to, from) {
-          console.log("navigate: ", to.name, from.name);
         }
     }
 });

@@ -54,14 +54,27 @@ export default function baseConfig () {
         }
       })
     )),
-    new PagesPlugin()
+    new PagesPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      minChunks: Infinity,
+      filename: 'manifest'
+    }),
+    new ExtractTextPlugin({
+      filename: 'style.css'// this.options.build.filenames.css
+    })
+    // new webpack.DllReferencePlugin({
+    //   context: this.options.rootDir,
+    //   manifest: require(join(this.options.cacheDir, "./manifest.json"))
+    // })
   ]);
 
   const rules = createLoaders.call(this);
 
   let webpackConfig = {
     entry: {
-      main: resolve(this.options.buildDir, 'app')
+      main: resolve(this.options.buildDir, 'app'),
+      vendor: ["vue", "vue-router", "vuex", "lodash"]
     },
     output: {
       path: resolve(this.options.buildDir, 'dist'),
@@ -92,7 +105,7 @@ export default function baseConfig () {
         nodeModulesDir
       ]
     },
-    devtool: this.options.dev ? 'cheap-module-source-map' : 'nosources-source-map'
+    devtool: this.options.dev ? 'cheap-module-source-map' : 'hidden-source-map'
   }
 
   if (this.options.dev) {

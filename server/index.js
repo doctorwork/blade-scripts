@@ -20,7 +20,7 @@ import { r } from "./utils";
  */
 function startWatcher () {
 	const patterns = [
-    r(this.options.srcDir, 'store'),
+    r(this.options.srcDir, 'store/index.js'),
     r(this.options.srcDir, 'modules/**/index.vue'),
     r(this.options.srcDir, 'components/**/index.vue'),
     r(this.options.srcDir, 'pages/**/*.vue')
