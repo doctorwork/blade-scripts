@@ -57,14 +57,18 @@ const _default = {
 };
 
 function loadWebConfig() {
-  const conf = require(resolve('.', 'web.config.js'));
-  return conf;
+  const path = resolve('.', 'web.config.js');
+  if (existsSync(path) && require.cache[path]) {
+    delete require.cache[path];
+  }
+  return require(path);
 }
 
 
 export default {
 	create (_opts) {
     const _conf = loadWebConfig();
+
 		const opts = Object.assign({}, _opts, _conf);
 
     let overriderNotFound = false;

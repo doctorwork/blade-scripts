@@ -10,6 +10,20 @@ import Router from 'vue-router'
 <% if(opts.plugins.route) { %>
 import beforeEachRoute from '<%= opts.plugins.route %>';
 <% } %>
+<% 
+  let _notFound = "";
+  let tab = '\t\t';
+  if ( opts.views.notFound !== false) {
+%>
+import notFound from '<%= opts.views.notFound %>';
+<%
+    _notFound += '{\n'
+    _notFound += tab + '\nname: "notFound",'
+    _notFound += tab + '\npath: "*",'
+    _notFound += tab + '\ncomponent: notFound,'
+    _notFound += tab + '\n}'
+  }
+%>
 Vue.use(Router)
 
 <%
@@ -62,18 +76,6 @@ const scrollBehavior = (to, from, savedPosition) => {
 }
 <% } %>
 
-<% 
-  let _notFound = "";
-  let tab = '\t\t';
-  if(opts.views.notFound !== false) {
-    _notFound += '{\n'
-    _notFound += tab + '\nname: "notFound",'
-    _notFound += tab + '\npath: "*",'
-    _notFound += tab + '\ncomponent: require("'+ opts.views.notFound +'")'
-    _notFound += tab + '\n}'
-  }
-%>
-
 // 路由插件处理
 
 export function createRouter () {
@@ -84,12 +86,11 @@ export function createRouter () {
     linkExactActiveClass: '<%= router.linkExactActiveClass %>',
     scrollBehavior,
     routes: [
-      <%= _routes %>,
-      <%= _notFound %>
+    <%= _routes %>,
+    <%= _notFound %>
     ],
     <% if(opts.plugins.route) { %>
     beforeEach: beforeEachRoute,
     <% } %>
-    fallback: <%= router.fallback %>
   })
 }

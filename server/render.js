@@ -27,7 +27,8 @@ import Generator from "./generator";
 export default class Render {
 
 	constructor(_opts) {
-		this.options = Options.create(_opts);
+		this._opts = _opts;
+		this.options = Options.create(this._opts);
 		// Fields that set on build
 		this.compiler = null
 		this.compilers = {};
@@ -39,11 +40,10 @@ export default class Render {
 		// Bind styleLoader and vueLoader
 		this.styleLoader = styleLoader.bind(this)
 		this.vueLoader = vueLoaderConfig.bind(this)
+	}
 
-		}
-
-		// 创建路由，插件，组件文件
-		async collectFiles () {
+	// 创建路由，插件，组件文件
+	async collectFiles () {
 			// 初始化配置文件
 
 		await remove(r(this.options.buildDir))
@@ -97,13 +97,17 @@ export default class Render {
 	 */
 	makeServer () {
 		this.makeConfig();
+		
+		const publicPath = this.configs.base.output.publicPath;
+
 		this.server = new webpackDevServer(this.compiler, {
+			proxy: (this.options.proxy || {}),
 			hot: true,
 			stats: false,
-			historyApiFallback: {
-				index: this.configs.base.output.publicPath
+			historyApiFallback:  publicPath == '/' ? true : {
+				index: publicPath
 			},
-			publicPath: this.configs.base.output.publicPath
+			publicPath: publicPath
 		});
 
 		this.webpackHotMiddleware = require('webpack-hot-middleware')(this.compiler, {
@@ -123,6 +127,15 @@ export default class Render {
 		await this.collectFiles();
 
 		this.makeConfig(true);
+	}
+
+	restart () {
+		this.options = Options.create(this._opts);
+		// 停止compiler
+		
+		this.server.close(() => {
+			this.start();
+		});
 	}
 
 	// 开启服务

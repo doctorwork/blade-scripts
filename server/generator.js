@@ -14,12 +14,14 @@ import hash from 'hash-sum';
 import debug from "debug";
 
 const files = [
+	"api.js",
 	"app.js",
 	"router.js",
 	"components.js",
 	"plugins.js",
 	"store.js",
 	"views/app.html",
+	"layouts/app.vue",
 	"layouts/404.vue"
 ]
 

@@ -13,7 +13,6 @@ function startWatcher () {
     r(this.options.srcDir, 'modules/**/index.vue'),
     r(this.options.srcDir, 'components/**/index.vue'),
     r(this.options.srcDir, 'pages/**/*.vue'),
-    r(this.options.srcDir, 'web.config.js')
   ]
 
   const options = Object.assign({}, this.options.watchers.chokidar, {
@@ -21,11 +20,15 @@ function startWatcher () {
   })
 
   const refreshFiles = _.debounce(() => this.generateRoutesAndFiles(), 500)
+  const restart = _.debounce(() => this.restart(), 500)
 
 	// 重新生成代码
   let filesWatcher = chokidar.watch(patterns, options)
     .on('add', refreshFiles)
     .on('unlink', refreshFiles)
+
+  chokidar.watch([r(this.options.srcDir, 'web.config.js')])
+    .on('change', restart);
 
 }
 

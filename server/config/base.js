@@ -5,7 +5,6 @@
 * @Last Modified time: 2017-09-29 11:49:33
 */
 
-const WebpackDevServer = require('webpack-dev-server');
 import PagesPlugin from "../plugins/pages";
 import {resolve, join} from "path";
 import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin'
@@ -92,6 +91,7 @@ export default function baseConfig () {
         'vue$': 'vue/dist/vue.esm.js', // 'vue/dist/vue.common.js' for webpack 1,
         'static': join(this.options.srcDir, 'static'),
         '~plugins': join(this.options.srcDir, 'plugins'),
+        '~blade': resolve(this.options.buildDir),
         'lodash': require.resolve('lodash'),
         'axios': require.resolve("axios"),
       }

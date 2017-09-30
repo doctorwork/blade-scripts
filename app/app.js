@@ -7,6 +7,7 @@
 import Vue from "vue";
 import {createRouter} from "./router";
 import installPlugins from "./plugins";
+import App from "./layouts/app";
 <% if (opts.vuex) { %>
 import store from "<%= opts.vuex %>";
 <% } %>
@@ -20,6 +21,7 @@ Vue.use(installPlugins);
 const router = createRouter();
 const app = new Vue({
     el: "#app",
+    ...App,
     router,
     <% if (opts.vuex) { %>
     store,
