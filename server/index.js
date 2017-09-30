@@ -8,36 +8,6 @@
 const fs = require('fs');
 const chalk = require('chalk');
 import Render from "./render";
-const express = require("express");
-const webpackDevServer = require("webpack-dev-server");
-import chokidar from "chokidar";
-import _ from 'lodash';
-import { r } from "./utils";
-/**
- * 监控文件目录
- * pages web.config.js
- * @return {} 
- */
-function startWatcher () {
-	const patterns = [
-    r(this.options.srcDir, 'store/index.js'),
-    r(this.options.srcDir, 'modules/**/index.vue'),
-    r(this.options.srcDir, 'components/**/index.vue'),
-    r(this.options.srcDir, 'pages/**/*.vue')
-  ]
-
-  const options = Object.assign({}, this.options.watchers.chokidar, {
-    ignoreInitial: true
-  })
-
-  const refreshFiles = _.debounce(() => this.generateRoutesAndFiles(), 200)
-
-	// 重新生成代码
-  let filesWatcher = chokidar.watch(patterns, options)
-    .on('add', refreshFiles)
-    .on('unlink', refreshFiles)
-
-}
 
 process.on('unhandledRejection', (reason, p) => {
     console.log('Reason: ' + reason, p);

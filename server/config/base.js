@@ -15,6 +15,7 @@ import HTMLPlugin from "html-webpack-plugin";
 import { isUrl, urlJoin } from '../utils';
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import {createLoaders} from "./loader";
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 /**
  * webpack plugins
@@ -22,12 +23,7 @@ import {createLoaders} from "./loader";
  */
 let plugins = [
   new webpack.IgnorePlugin(/(precomputed)/, /node_modules.+(elliptic)/),
-  new ProgressBarPlugin(),
-  new webpack.optimize.CommonsChunkPlugin({
-    name: 'commons',
-    filename: 'vendor.[hash:8].js',
-    minChunks: 2
-  }),
+  new ProgressBarPlugin()
 ];
 
 export default function baseConfig () {
@@ -56,9 +52,9 @@ export default function baseConfig () {
     )),
     new PagesPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
-      minChunks: Infinity,
-      filename: 'manifest'
+      name: 'vendor',
+      filename: 'vendor.[hash:8].js',
+      minChunks: 2
     }),
     new ExtractTextPlugin({
       filename: 'style.css'// this.options.build.filenames.css
@@ -74,11 +70,11 @@ export default function baseConfig () {
   let webpackConfig = {
     entry: {
       main: resolve(this.options.buildDir, 'app'),
-      vendor: ["vue", "vue-router", "vuex", "lodash"]
+      vendor: ['vue', 'vue-router', 'vuex', 'lodash']
     },
     output: {
       path: resolve(this.options.buildDir, 'dist'),
-      filename: 'app.[chunkhash:8].js',
+      filename: '[name].[chunkhash:8].js',
       chunkFilename: '[name].[chunkhash:8].js',
       publicPath: (isUrl(this.options.build.publicPath)
         ? this.options.build.publicPath
@@ -95,6 +91,7 @@ export default function baseConfig () {
       alias: {
         'vue$': 'vue/dist/vue.esm.js', // 'vue/dist/vue.common.js' for webpack 1,
         'static': join(this.options.srcDir, 'static'),
+        '~plugins': join(this.options.srcDir, 'plugins'),
         'lodash': require.resolve('lodash'),
         'axios': require.resolve("axios"),
       }
@@ -124,10 +121,14 @@ export default function baseConfig () {
     )
   } else {
     webpackConfig.plugins.push(
-      new webpack.optimize.UglifyJsPlugin({
+      new UglifyJSPlugin({
         sourceMap: true,
         extractComments: {
           filename: 'LICENSES'
+        },
+        uglifyOptions: {
+          ie8: true,
+          ecma: 8
         },
         compress: {
           warnings: false

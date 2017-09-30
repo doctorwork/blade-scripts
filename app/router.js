@@ -88,7 +88,7 @@ export function createRouter () {
       <%= _notFound %>
     ],
     <% if(opts.plugins.route) { %>
-    beforeEach: beforeEachRoute
+    beforeEach: beforeEachRoute,
     <% } %>
     fallback: <%= router.fallback %>
   })

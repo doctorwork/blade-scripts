@@ -6,6 +6,7 @@
 */
 import Vue from "vue";
 import {createRouter} from "./router";
+import installPlugins from "./plugins";
 <% if (opts.vuex) { %>
 import store from "<%= opts.vuex %>";
 <% } %>
@@ -14,6 +15,7 @@ import InstallComponents from "./components";
 
 // 插件注入
 Vue.use(InstallComponents);
+Vue.use(installPlugins);
 
 const router = createRouter();
 const app = new Vue({

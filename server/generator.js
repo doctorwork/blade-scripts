@@ -54,15 +54,6 @@ async function getComponents(opts) {
 	});
 }
 
-/**
- * 获取components 文件
- */
-async function getPlugins(opts) {
-	let files = glob.sync('plugins/*/index.vue', { cwd: opts.srcDir });
-	opts.runtime.plugins = [];
-}
-
-
 export default {
 	async generate (opts) {
 		debug("> 生成路由...");
@@ -70,7 +61,6 @@ export default {
 
 		getModules(opts);
 		getComponents(opts);
-		getPlugins(opts);
 
 		const context = {
 			opts,
@@ -104,7 +94,7 @@ export default {
 						relativeToBuild: relativeToBuild,
 						hash,
 	          r,
-	          plugins: opts.runtime.plugins,
+	          plugins: opts.plugins,
 	          components: opts.runtime.components,
 	          modules: opts.runtime.modules,
 	          opts,
@@ -121,7 +111,7 @@ export default {
 
 			await writeFile(path, content, 'utf-8');
 			const dateFS = Date.now() / 1000 - 1000
-      return utimes(path, dateFS, dateFS)
+			return utimes(path, dateFS, dateFS)
 		}))
 	}
 }

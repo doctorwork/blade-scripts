@@ -9,8 +9,8 @@ import chokidar from 'chokidar';
 import webpack from 'webpack';
 import debug from "debug";
 import {remove, mkdirp} from "fs-extra";
-import express from "express";
 var opn = require('opn')
+import watcher from "./watcher";
 
 import webpackDevServer from "webpack-dev-server";
 
@@ -27,29 +27,29 @@ import Generator from "./generator";
 export default class Render {
 
 	constructor(_opts) {
-    this.options = Options.create(_opts);
-    // Fields that set on build
-    this.compiler = null
-    this.compilers = {};
-    this.webpackDevMiddleware = null
-    this.webpackHotMiddleware = null
+		this.options = Options.create(_opts);
+		// Fields that set on build
+		this.compiler = null
+		this.compilers = {};
+		this.webpackDevMiddleware = null
+		this.webpackHotMiddleware = null
 
-    this._env = process.env.NODE_ENV;
+		this._env = process.env.NODE_ENV;
 
-    // Bind styleLoader and vueLoader
-    this.styleLoader = styleLoader.bind(this)
-    this.vueLoader = vueLoaderConfig.bind(this)
+		// Bind styleLoader and vueLoader
+		this.styleLoader = styleLoader.bind(this)
+		this.vueLoader = vueLoaderConfig.bind(this)
 
-	}
+		}
 
-	// 创建路由，插件，组件文件
-	async collectFiles () {
-		// 初始化配置文件
+		// 创建路由，插件，组件文件
+		async collectFiles () {
+			// 初始化配置文件
 
-    await remove(r(this.options.buildDir))
-    await mkdirp(r(this.options.buildDir, 'components'))
+		await remove(r(this.options.buildDir))
+		await mkdirp(r(this.options.buildDir, 'components'))
 
-    await this.generateRoutesAndFiles();
+		await this.generateRoutesAndFiles();
 
 	}
 
@@ -57,6 +57,7 @@ export default class Render {
 		await Generator.generate(this.options);
 
 		// 配置proxy
+		console.log("> 动态文件已更新");
 	}
 
 	makeConfig (build) {
@@ -82,7 +83,7 @@ export default class Render {
 					chunks: false,
 					chunkModules: true,
 					colors: true,
-					errors: true,
+					errors: false,
 					// Add details to errors (like resolving log)
 					errorDetails: true,
 				}) + '\n\n')
@@ -114,7 +115,7 @@ export default class Render {
 
 	// 监控文件变化
 	watch () {
-
+		watcher.call(this);
 	}
 
 	// 构建文件
@@ -130,7 +131,7 @@ export default class Render {
 
 		// 初始化 dev server ? express
 		this.makeServer();
-
 		this.server.listen(this.options.port || 8080);
+		this.watch();
 	}
 }

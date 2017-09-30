@@ -5,14 +5,14 @@
 * @Last Modified time: 2017-09-28 17:27:58
 */
 
-const plugins = {};
-
-<% if (plugins.route) { %>
-plugins.route = import '<%= relativeToBuild(plugins.route) %>';
+<% if (plugins.global) { %>
+import plugin from '<%= relativeToBuild(plugins.global) %>';
 <% } %>
 
-<% if (plugins.store) { %>
-plugins.store = import '<%= relativeToBuild(plugins.store) %>';
-<% } %>
-
-export default plugins
+export default {
+    install (Vue) {
+        <% if (plugins.global) { %>
+        plugin(Vue);
+        <% } %>
+    }
+}
