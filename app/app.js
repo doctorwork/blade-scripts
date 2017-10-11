@@ -4,8 +4,12 @@
 * @Last Modified by:   insane.luojie
 * @Last Modified time: 2017-09-29 14:45:49
 */
+
+/*eslint-disable*/
+
 import Vue from "vue";
 import {createRouter} from "./router";
+import "./assets/reset"; // 全局样式
 import installPlugins from "./plugins";
 import App from "./layouts/app";
 <% if (opts.vuex) { %>

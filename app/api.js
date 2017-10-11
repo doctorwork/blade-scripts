@@ -1,4 +1,13 @@
+/*eslint-disable*/
+
 import axios from "axios";
+import _ from "lodash";
+
+let config = {
+	alwaysResolve: false,
+	errcode: 'errcode',
+	errmsg: 'errmsg'
+}
 
 /**
  * 公共请求
@@ -21,12 +30,12 @@ function request(method, url, params) {
 		axios(conf)
 	    .then(response => {
 	      if (response.status === 200) {
-          switch (response.data.err_code) {
+          switch (response.data[config.errcode]) {
             case 0:
                 resolve(response.data.data);
                 break;
             default:
-             reject(response.data.message || '没有数据');
+             reject(response.data[errmsg] || '没有数据');
           }
 	      } else {
 	        reject(response);
@@ -56,6 +65,8 @@ export function $post (url, params) {
  * 初始化 axios 配置
  * @return {} [description]
  */
-export function setup (func) {
+export function setup (func, opts) {
+	// merge with other options
+	config = _.merge(config, opts);
 	func && func.call(null, axios);
 }

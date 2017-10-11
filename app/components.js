@@ -4,27 +4,25 @@
 * @Last Modified by:   insane.luojie
 * @Last Modified time: 2017-09-29 13:28:59
 */
-
-const components = {};
-const modules = {};
+/*eslint-disable*/
 
 <% components.forEach((item) => { %>
-components['<%= item.name %>'] = require('<%= relativeToBuild(item.path) %>'); 
+import <%= item.name %> from '<%= relativeToBuild(item.path) %>';
 <% }) %>
 
 <% modules.forEach((item) => { %>
-modules['<%= item.name %>'] = require('<%= relativeToBuild(item.path) %>'); 
+import <%= item.name %> from '<%= relativeToBuild(item.path) %>';
 <% }) %>
 
 export default {
 	install (Vue) {
 		// 注册 components
-		Object.keys(components).forEach((item) => {
-		  Vue.component(item, components[item]);
-		});
+		<% components.forEach((item) => { %>
+	  Vue.component('<%= item.name %>', <%= item.name %>);
+		<% }) %>
 
-		Object.keys(modules).forEach((item) => {
-		  Vue.component(item, modules[item]);
-		})
+		<% modules.forEach((item) => { %>
+	  Vue.component('<%= item.name %>', <%= item.name %>);
+		<% }) %>
 	}
 }

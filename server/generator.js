@@ -14,6 +14,7 @@ import hash from 'hash-sum';
 import debug from "debug";
 
 const files = [
+	"assets/reset.less",
 	"api.js",
 	"app.js",
 	"router.js",
@@ -39,7 +40,13 @@ async function getRoutes(opts) {
 async function getModules(opts) {
 	let files = glob.sync('modules/*/index.vue', { cwd: opts.srcDir });
 	//
-	opts.runtime.modules = [];
+	opts.runtime.modules = files.map((item) => {
+		/modules\/(.+)\/index/.exec(item);
+		return {
+			name: RegExp.$1.replace("-", "_"),
+			path: item
+		}
+	});
 }
 
 /**

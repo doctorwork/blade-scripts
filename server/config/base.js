@@ -56,7 +56,7 @@ export default function baseConfig () {
       minChunks: 2
     }),
     new ExtractTextPlugin({
-      filename: 'style.css'// this.options.build.filenames.css
+      filename: 'css/style.[chunkhash:8].css'// this.options.build.filenames.css
     })
     // new webpack.DllReferencePlugin({
     //   context: this.options.rootDir,
@@ -90,10 +90,9 @@ export default function baseConfig () {
       alias: {
         'vue$': 'vue/dist/vue.esm.js', // 'vue/dist/vue.common.js' for webpack 1,
         'static': join(this.options.srcDir, 'static'),
-        '~plugins': join(this.options.srcDir, 'plugins'),
-        '~blade': resolve(this.options.buildDir),
-        'lodash': require.resolve('lodash'),
-        'axios': require.resolve("axios"),
+        '~': join(this.options.srcDir),
+        '@': resolve(this.options.buildDir),
+        'lodash': require.resolve('lodash')
       }
     },
     resolveLoader: {
@@ -121,14 +120,14 @@ export default function baseConfig () {
     )
   } else {
     webpackConfig.plugins.push(
-      new UglifyJSPlugin({
-        sourceMap: true,
+      new webpack.optimize.UglifyJsPlugin({
+        sourceMap: false,
         extractComments: {
           filename: 'LICENSES'
         },
         uglifyOptions: {
           ie8: true,
-          ecma: 8
+          ecma: 6
         },
         compress: {
           warnings: false

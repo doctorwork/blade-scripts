@@ -33,15 +33,10 @@ export function createLoaders() {
     options: this.vueLoader()
   }, {
     test: /\.css$/,
-    loaders: ['file-loader', 'css-loader', postcssLoader]
+    loaders: this.styleLoader('css', [])
   }, {
     test: /\.less$/,
-    loaders: ['file-loader', 'css-loader', postcssLoader, 'less-loader', {
-      loader: "sass-resources-loader",
-      options: {
-        resources: this.options.resources
-      }
-    }]
+    loaders: this.styleLoader('less', ['less-loader'])
   }, {
       test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
       loaders: [

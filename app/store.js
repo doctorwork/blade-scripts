@@ -4,6 +4,7 @@
 * @Last Modified by:   insane.luojie
 * @Last Modified time: 2017-09-25 15:11:55
 */
+/*eslint-disable*/
 
 import Vue from "vue";
 import Vuex from "vuex";

@@ -4,6 +4,7 @@
 * @Last Modified by:   insane.luojie
 * @Last Modified time: 2017-09-29 14:36:35
 */
+/*eslint-disable*/
 
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -79,7 +80,7 @@ const scrollBehavior = (to, from, savedPosition) => {
 // 路由插件处理
 
 export function createRouter () {
-  return new Router({
+  const router = new Router({
     mode: '<%= router.mode %>',
     base: '<%= router.base %>',
     linkActiveClass: '<%= router.linkActiveClass %>',
@@ -88,9 +89,11 @@ export function createRouter () {
     routes: [
     <%= _routes %>,
     <%= _notFound %>
-    ],
-    <% if(opts.plugins.route) { %>
-    beforeEach: beforeEachRoute,
-    <% } %>
+    ]
   })
+
+  <% if(opts.plugins.route) { %>
+  router.beforeEach(beforeEachRoute)
+  <% } %>
+  return router;
 }

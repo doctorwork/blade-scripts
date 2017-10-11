@@ -4,6 +4,7 @@
 * @Last Modified by:   insane.luojie
 * @Last Modified time: 2017-09-28 17:27:58
 */
+/*eslint-disable*/
 
 <% if (plugins.global) { %>
 import plugin from '<%= relativeToBuild(plugins.global) %>';

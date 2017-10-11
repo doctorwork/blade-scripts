@@ -25,8 +25,7 @@ const _default = {
   appTemplatePath: "",
   runtime: {},
   babel: {
-  	presets: ['env'],
-    plugins: [require.resolve('babel-plugin-transform-vue-jsx')]
+  	presets: ['env']
   },
   eslint: {
 
@@ -134,7 +133,7 @@ export default {
         require.resolve('babel-preset-vue-app')
       ]
     }
-		
+
 	  // If app.html is defined, set the template path to the user template
 	  opts.appTemplatePath = resolve(opts.buildDir, 'views/app.html')
 	  if (existsSync(join(opts.srcDir, 'app.html'))) {

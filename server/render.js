@@ -38,6 +38,8 @@ export default class Render {
 		this._env = process.env.NODE_ENV;
 
 		// Bind styleLoader and vueLoader
+		this.babelOptions = this.options.babelOptions;
+
 		this.styleLoader = styleLoader.bind(this)
 		this.vueLoader = vueLoaderConfig.bind(this)
 	}
@@ -47,7 +49,6 @@ export default class Render {
 			// 初始化配置文件
 
 		await remove(r(this.options.buildDir))
-		await mkdirp(r(this.options.buildDir, 'components'))
 
 		await this.generateRoutesAndFiles();
 
@@ -58,6 +59,7 @@ export default class Render {
 
 		// 配置proxy
 		console.log("> 动态文件已更新");
+		console.log(" ");
 	}
 
 	makeConfig (build) {
@@ -80,12 +82,9 @@ export default class Render {
 			}), (err, stats) => {
 				if (err) throw err
 				process.stdout.write(stats.toString({
-					chunks: false,
-					chunkModules: true,
-					colors: true,
-					errors: false,
-					// Add details to errors (like resolving log)
-					errorDetails: true,
+		      modules: false,
+		      colors: true,
+		      depth: false,
 				}) + '\n\n')
 			});
 		}
