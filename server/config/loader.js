@@ -35,6 +35,13 @@ export function createLoaders() {
     test: /\.css$/,
     loaders: this.styleLoader('css', [])
   }, {
+    test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+    loader: 'url-loader',
+    options: {
+      limit: 1000, // 1 KO
+      name: 'fonts/[name].[hash:7].[ext]'
+    }
+  }, {
     test: /\.less$/,
     loaders: this.styleLoader('less', ['less-loader'])
   }, {

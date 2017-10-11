@@ -47,6 +47,7 @@ const _default = {
   views: {
     notFound: './layouts/404.vue'
   },
+  type: 'mobile',
 	router: {
 		mode: "history",
 		linkActiveClass: "b-link-active",

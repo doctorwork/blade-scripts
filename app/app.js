@@ -18,6 +18,11 @@ import store from "<%= opts.vuex %>";
 import InstallComponents from "./components";
 <% opts.css.forEach(item => { %>import "<%= item %>";<% }) %>
 
+<% if (opts.type == 'mobile') { %>
+// 设置 rem
+document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
+<% } %>
+
 // 插件注入
 Vue.use(InstallComponents);
 Vue.use(installPlugins);
