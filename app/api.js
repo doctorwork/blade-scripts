@@ -32,13 +32,13 @@ function request(method, url, params) {
 	      if (response.status === 200) {
           switch (response.data[config.errcode]) {
             case 0:
-                resolve(response.data.data);
+              resolve(response.data.data);
                 break;
             default:
-             reject(response.data[errmsg] || '没有数据');
+            	reject(response.data);
           }
 	      } else {
-	        reject(response);
+	        reject(response.data);
 	      }
 	    })
 	    .catch((err) => {
@@ -71,17 +71,36 @@ export function setup (func, opts) {
 	func && func.call(null, axios);
 }
 
+// 替换url中参数
+function parseUrl(url, params) {
+	return url && url.replace(/\{(\w+)\}/g, (m, n) => {
+    return params[n];
+  });
+}
 
 // 创建get 请求 路由
 export function makeGet (url) {
-	return function (data) {
-		return $get(url, data);
+	return function (data, params) {
+		return $get(parseUrl(url, params), data);
 	}
 }
 
 // 创建post 请求 路由
 export function makePost (url) {
-	return function (data) {
-		return $post(url, data);
+	return function (data, params) {
+		return $post(parseUrl(url, params), data);
 	}
+}
+
+// 创建resource 请求
+export makeResource (url, actions, opts) {
+	var schemas = actions || {
+		get: { method: 'GET', url: url + "/:id" },
+		query: { method: 'GET', url },
+		update: { method: 'PUT', url: url + "/:id" },
+		delete: { method: "DELETE", url: url + "/:id" }
+	}
+	return _.forEach((item, key) => {
+		return item;
+	})
 }
