@@ -33,12 +33,8 @@ const app = new Vue({
     ...App,
     router,
     <% if (opts.vuex) { %>
-    store,
+    store
     <% } %>
-    watch: {
-        '$route': function (to, from) {
-        }
-    }
 });
 
 export default {

@@ -58,7 +58,7 @@ export function $get (url, params) {
  * post 请求
  */
 export function $post (url, params) {
-	return request('get', url, params);
+	return request('post', url, params);
 }
 
 /**
@@ -69,4 +69,19 @@ export function setup (func, opts) {
 	// merge with other options
 	config = _.merge(config, opts);
 	func && func.call(null, axios);
+}
+
+
+// 创建get 请求 路由
+export function makeGet (url) {
+	return function (data) {
+		return $get(url, data);
+	}
+}
+
+// 创建post 请求 路由
+export function makePost (url) {
+	return function (data) {
+		return $post(url, data);
+	}
 }
