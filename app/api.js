@@ -4,6 +4,13 @@ import axios from "axios";
 import _ from "lodash";
 
 export const instance = axios.create();
+instance.defautls = {
+	timeout: 10000,
+	withCredentials: true,
+	headers: {
+		'Content-Type': 'application/x-www-form-urlencoded'
+	}
+};
 
 /**
  * 默认响应拦截
@@ -12,7 +19,11 @@ export const instance = axios.create();
  */
 const responseInterceptor = instance.interceptors.response.use((response) => {
 	switch (response.status) {
-		case 200:
+		case 200:  // get - ok
+		case 201:  // post/put/patch - created
+		case 202:  // * - accepted [async task]
+		case 204:  // delete - no content
+		case 422:  // post/put/patch - unprocessable entity
 			return response.data;
 			break;
 		default:
@@ -29,11 +40,10 @@ const responseInterceptor = instance.interceptors.response.use((response) => {
  * @return {object}      
  */
 function request(method, url, params) {
-	const conf = { 
+	const conf = Object.assign({ 
 		url, 
 		method, 
-		withCredentials: true
-	};
+	}, instance.defautls);
 
 	// 合并请求代码
 	if (method == 'get') {
@@ -46,6 +56,11 @@ function request(method, url, params) {
 		return instance(conf)
 			.then((response) => {
 				resolve(response);
+			})
+			.catch((err) => {
+				resolve(err.response ? err.response.data : {
+					errmsg: err.message
+				});
 			});
 	})
 }
@@ -64,10 +79,7 @@ export function setup (opts) {
 	}
 
 	// merge with other options
-	instance.defautls =	_.defaultsDeep(defautls, {
-		timeout: 10000,
-		withCredentials: true
-	});
+	instance.defautls =	_.defaultsDeep(defautls, instance.defautls);
 }
 
 /**
@@ -92,25 +104,12 @@ function maker(method, url) {
 	}
 }
 
-// 创建get 请求 路由
-export function makeGet (url) {
-	return maker('get', url);
-}
-
-// 创建post 请求 路由
-export function makePost (url) {
-	return maker('post', url);
-}
-
-// 创建post 请求 路由
-export function makePut (url) {
-	return maker('put', url);
-}
-
-// 创建post 请求 路由
-export function makeDelete (url) {
-	return maker('delete', url);
-}
+// 创建请求方法
+export const [makeGet, makePost, makePut, makeDelete] = ['get', 'post', 'put', 'delete'].map((item) => {
+	return function (url) {
+		return maker(item, url);
+	}
+})
 
 // 创建resource 请求
 export function makeResource (url, actions, opts) {

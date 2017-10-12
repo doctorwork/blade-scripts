@@ -8,7 +8,7 @@
  */
 
 'use strict';
-
+const pkg = require("../package");
 const path = require('path');
 const spawn = require('cross-spawn');
 const script = process.argv[2];
@@ -23,6 +23,9 @@ process.on('unhandledRejection', err => {
 });
 
 const dir = resolve('.');
+
+console.log("> blade version: ", pkg.version);
+console.log(' ');
 
 // 检查目录
 if (!existsSync(join(dir, 'pages'))) {
