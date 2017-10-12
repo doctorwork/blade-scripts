@@ -110,7 +110,7 @@ export default class Render {
 		});
 
 		this.webpackHotMiddleware = require('webpack-hot-middleware')(this.compiler, {
-		 // quiet: true
+		 quiet: true
 		});
 
 		this.server.use(this.webpackHotMiddleware);
@@ -131,10 +131,8 @@ export default class Render {
 	restart () {
 		this.options = Options.create(this._opts);
 		// 停止compiler
-		
-		this.server.close(() => {
-			this.start(true);
-		});
+		this.server.close();
+		this.start(true);
 	}
 
 	// 开启服务

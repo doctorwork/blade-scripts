@@ -4,14 +4,17 @@ import axios from "axios";
 import _ from "lodash";
 
 export const instance = axios.create();
+
 instance.defautls = {
 	timeout: 10000,
-	withCredentials: true,
-	headers: {
-		'Content-Type': 'application/x-www-form-urlencoded'
-	}
+	withCredentials: true
 };
 
+// 全局配置
+const requestInterceptor = instance.interceptors.request.use((config) => {
+	config.headers['content-type'] = 'application/x-www-form-urlencoded';
+	return config;
+});
 /**
  * 默认响应拦截
  * @param  {object} response 响应内容
@@ -39,10 +42,11 @@ const responseInterceptor = instance.interceptors.response.use((response) => {
  * @param  {object params  请求参数
  * @return {object}      
  */
-function request(method, url, params) {
+function request(method, url, params = {}) {
 	const conf = Object.assign({ 
 		url, 
-		method, 
+		method,
+		data: {}
 	}, instance.defautls);
 
 	// 合并请求代码
@@ -76,6 +80,10 @@ export function setup (opts) {
 	if (interceptors && interceptors.response) {
 		instance.interceptors.response.eject(responseInterceptor);
 		instance.interceptors.response.use(interceptors.response);
+	}
+
+	if (interceptors && interceptors.request) {
+		instance.interceptors.request.use(interceptors.request);
 	}
 
 	// merge with other options

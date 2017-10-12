@@ -7,22 +7,22 @@
 /*eslint-disable*/
 
 <% components.forEach((item) => { %>
-import <%= item.name %> from '<%= relativeToBuild(item.path) %>';
+import <%= item.varName %> from '<%= relativeToBuild(item.path) %>';
 <% }) %>
 
 <% modules.forEach((item) => { %>
-import <%= item.name %> from '<%= relativeToBuild(item.path) %>';
+import <%= item.varName %> from '<%= relativeToBuild(item.path) %>';
 <% }) %>
 
 export default {
 	install (Vue) {
 		// 注册 components
 		<% components.forEach((item) => { %>
-	  Vue.component('<%= item.name %>', <%= item.name %>);
+	  Vue.component('<%= item.name %>', <%= item.varName %>);
 		<% }) %>
 
 		<% modules.forEach((item) => { %>
-	  Vue.component('<%= item.name %>', <%= item.name %>);
+	  Vue.component('<%= item.name %>', <%= item.varName %>);
 		<% }) %>
 	}
 }

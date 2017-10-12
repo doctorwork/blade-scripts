@@ -42,8 +42,10 @@ async function getModules(opts) {
 	//
 	opts.runtime.modules = files.map((item) => {
 		/modules\/(.+)\/index/.exec(item);
+		let name = RegExp.$1;
 		return {
-			name: RegExp.$1.replace("-", "_"),
+			name,
+			varName: name.replace('-', "_"),
 			path: item
 		}
 	});
@@ -56,8 +58,10 @@ async function getComponents(opts) {
 	let files = glob.sync('components/*/index.vue', { cwd: opts.srcDir });
 	opts.runtime.components = files.map((item) => {
 		/components\/(.+)\/index/.exec(item);
+		let name = RegExp.$1;
 		return {
-			name: RegExp.$1,
+			name,
+			varName: name.replace('-', "_"),
 			path: item
 		}
 	});
