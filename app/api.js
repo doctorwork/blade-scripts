@@ -115,11 +115,11 @@ export function makeDelete (url) {
 // 创建resource 请求
 export function makeResource (url, actions, opts) {
 	var schemas = actions || {
-		get: { method: 'GET', url: url + "/:id" },
+		get: { method: 'GET', url: url + "/{id}" },
 		query: { method: 'GET', url },
 		create: { method: 'POST', url },
-		update: { method: 'PUT', url: url + "/:id" },
-		delete: { method: "DELETE", url: url + "/:id" }
+		update: { method: 'PUT', url: url + "/{id}" },
+		delete: { method: "DELETE", url: url + "/{id}" }
 	}
 
 	const _makers = {makeGet, makePost, makePut, makeDelete};
