@@ -13,7 +13,7 @@ import "./assets/reset"; // 全局样式
 import installPlugins from "./plugins";
 import App from "./layouts/app";
 <% if (opts.vuex) { %>
-import store from "<%= opts.vuex %>";
+import store from "./store";
 <% } %>
 import InstallComponents from "./components";
 <% opts.css.forEach(item => { %>import "<%= item %>";<% }) %>

@@ -95,10 +95,6 @@ export default {
       opts.router.base = "/h5/" + levels[levels.length-1] + "/";
     }
 
-    opts.vuex = existsSync(join(opts.rootDir, 'store', 'index.js')) ? 
-      relativeTo(opts.buildDir, join(opts.rootDir, 'store', 'index.js')) 
-      : false;
-
     // Postcss
     opts.build.postcss = {
       sourceMap: opts.build.cssSourceMap,
