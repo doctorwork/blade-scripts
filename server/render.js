@@ -48,8 +48,8 @@ export default class Render {
 	 * 获取第三方vendor
 	 * @return {array} 
 	 */
-	vendor () {
-		return ['vue', 'vue-router', 'vuex', 'lodash'];
+	vendors () {
+		return _.union(['vue', 'vue-router', 'vuex'], this.options.vendors);
 	}
 
 	/**
@@ -101,25 +101,25 @@ export default class Render {
 
 	async makeDll () {
 		// 如果是重启，直接返回 todo
-		return Promise.resolve();
-		// return new Promise((resolve, reject) => {
-		// 	webpack(dllWebpackConfig.call(this), (err, stats) => {
-		// 		console.log("> [dll] generated" + '\n');
-		// 		process.stdout.write(stats.toString({
-		//       modules: true,
-		//       colors: true,
-		//       depth: false,
-		// 		}) + '\n\n')
-		// 		resolve();
-		// 	});
-		// })
+		// return Promise.resolve();
+		return new Promise((resolve, reject) => {
+			console.log("> [dll] compiling" + '\n');
+			webpack(dllWebpackConfig.call(this), (err, stats) => {
+				process.stdout.write(stats.toString({
+		      modules: false,
+		      colors: true,
+		      depth: false,
+				}) + '\n\n')
+				resolve();
+			});
+		})
 	}
 
 	/**
 	 * 初始化服务器
 	 * @return {[type]} [description]
 	 */
-	async makeServer () {
+	async makeServer (restart) {
 		await this.makeDll();
 
 		this.makeConfig();
@@ -128,7 +128,7 @@ export default class Render {
 		this.server = new webpackDevServer(this.compiler, {
 			proxy: (this.options.proxy || {}),
 			hot: true,
-			stats: true,
+			stats: false,
 			historyApiFallback:  publicPath == '/' ? true : {
 				index: publicPath
 			},

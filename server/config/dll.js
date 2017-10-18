@@ -13,38 +13,55 @@ export default function dllConfig (base) {
 
 	// todo 合并 vendor
   const nodeModulesDir = join(__dirname, '..', '..', '..', 'node_modules');
-	
-	const conf = Object.assign({}, base, {
+
+	const conf = Object.assign({}, {
 		name,
 		entry: {
-			vendor: this.vendor()
+			vue: this.vendors()
 		},
 		output: {
 			path: cacheDir,
-			filename: '[name].[hash:8].js',
-			library: '[name]_[hash]'
+			filename: 'vendor.[hash:8].js',
+			library: 'vendor_[hash]'
 		},
 		resolve: {
 			extensions: ['.js'],
       modules: ["node_modules", nodeModulesDir],
       alias: {
-	      'vue$': 'vue/dist/vue.esm.js', // 'vue/dist/vue.common.js' for webpack 1,
-	      'lodash': require.resolve('lodash')
+	      'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack 1,
 	    }
     },
 		plugins: [
 			new webpack.DllPlugin({
-	      context: __dirname,
+	      context: this.options.rootDir,
 				// The path to the manifest file which maps between
 				// modules included in a bundle and the internal IDs
 				// within that bundle
 				path: resolve(cacheDir, 'vendor-manifest.json'),
-				name: '[name]_[hash]'
+				name: 'vendor_[hash]'
 			})
-		]
+		],
+    devtool: this.options.dev ? 'cheap-module-source-map' : 'hidden-source-map'
 	});
 
 	// 添加 production 插件
-
+  if (!this.options.dev) {
+  	conf.plugins.push(
+      new webpack.optimize.UglifyJsPlugin({
+        sourceMap: false,
+        extractComments: {
+          filename: 'LICENSES'
+        },
+        uglifyOptions: {
+          ie8: true,
+          ecma: 6
+        },
+        compress: {
+          warnings: false
+        }
+      })
+    )
+  }
+  
 	return conf;
 }

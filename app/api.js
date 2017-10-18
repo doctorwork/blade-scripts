@@ -1,7 +1,7 @@
 /*eslint-disable*/
 
 import axios from "axios";
-import _ from "lodash";
+import {omit, defaultsDeep, mapValues} from "lodash";
 
 export const instance = axios.create();
 

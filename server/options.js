@@ -28,7 +28,6 @@ const _default = {
   },
   runtime: {},
   babel: {
-  	presets: ['env']
   },
   eslint: {
 
@@ -50,6 +49,7 @@ const _default = {
   views: {
     notFound: './layouts/404.vue',
   },
+  vendors: [],
   type: 'mobile',
 	router: {
 		mode: "history",
@@ -129,7 +129,7 @@ export default {
       babelrc: false,
       cacheDirectory: !!opts.dev
     })
-    if (!opts.babelrc && !opts.presets) {
+    if (!opts.babelrc && !opts.babel.presets) {
       opts.babelOptions.presets = [
         require.resolve('babel-preset-vue-app')
       ]
