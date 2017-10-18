@@ -11,7 +11,7 @@ import Vue from "vue";
 import {createRouter} from "./router";
 import "./assets/reset"; // 全局样式
 import installPlugins from "./plugins";
-import App from "./layouts/app";
+import App from "<%= opts.layout.main %>";
 <% if (opts.vuex) { %>
 import store from "./store";
 <% } %>

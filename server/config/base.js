@@ -50,18 +50,19 @@ export default function baseConfig () {
       })
     )),
     new PagesPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({ 
+      names: ["common", "vendor"],
+      minChunks: 3
+      // minChunks: Infinity,
+      // filename: 'vendor.[hash:8].js',
+    }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      filename: 'vendor.[hash:8].js',
-      minChunks: 2
+      name: "manifest",
+      minChunks: Infinity
     }),
     new ExtractTextPlugin({
       filename: 'css/style.[chunkhash:8].css'// this.options.build.filenames.css
     })
-    // new webpack.DllReferencePlugin({
-    //   context: this.options.rootDir,
-    //   manifest: require(join(this.options.cacheDir, "./manifest.json"))
-    // })
   ]);
 
   const rules = createLoaders.call(this);
@@ -69,11 +70,11 @@ export default function baseConfig () {
   let webpackConfig = {
     entry: {
       main: resolve(this.options.buildDir, 'app'),
-      vendor: ['vue', 'vue-router', 'vuex', 'lodash']
+      vendor: this.vendor()
     },
     output: {
       path: resolve(this.options.buildDir, 'dist'),
-      filename: '[name].[chunkhash:8].js',
+      filename: '[name].[hash:8].js',
       chunkFilename: '[name].[chunkhash:8].js',
       publicPath: (isUrl(this.options.build.publicPath)
         ? this.options.build.publicPath
@@ -88,10 +89,10 @@ export default function baseConfig () {
       modules: ["node_modules", nodeModulesDir],
       extensions: ['.js', '.vue', '.json', '.less', '.ts'],
       alias: {
-        'vue$': 'vue/dist/vue.esm.js', // 'vue/dist/vue.common.js' for webpack 1,
         'static': join(this.options.srcDir, 'static'),
         '~': join(this.options.srcDir),
         '@': resolve(this.options.buildDir),
+        'vue$': 'vue/dist/vue.esm.js', // 'vue/dist/vue.common.js' for webpack 1,
         'lodash': require.resolve('lodash')
       }
     },
@@ -112,6 +113,7 @@ export default function baseConfig () {
 
     webpackConfig.plugins.push(
       new webpack.HotModuleReplacementPlugin(),
+      new webpack.NamedModulesPlugin(),
       new FriendlyErrorsWebpackPlugin({
         compilationSuccessInfo: {
           messages: [`up and running here http://127.0.0.1:${this.options.port || 8080}${this.options.router.base}`]

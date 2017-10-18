@@ -44,10 +44,20 @@ export default class Render {
 		this.vueLoader = vueLoaderConfig.bind(this)
 	}
 
-	// 创建路由，插件，组件文件
+	/**
+	 * 获取第三方vendor
+	 * @return {array} 
+	 */
+	vendor () {
+		return ['vue', 'vue-router', 'vuex', 'lodash'];
+	}
+
+	/**
+	 * 创建路由，插件，组件文件
+	 * @return {[type]} [description]
+	 */
 	async collectFiles () {
 			// 初始化配置文件
-
 		await remove(r(this.options.buildDir))
 
 		await this.generateRoutesAndFiles();
@@ -65,7 +75,6 @@ export default class Render {
 	makeConfig (build) {
 		// 初始化 app compiler
 		const configs = [];
-		// [webpackConfig, dllWebpackConfig].forEach((item) => {
 		[webpackConfig].forEach((item) => {
 			const config = item.call(this);
 			configs[config.name] = config;
@@ -90,19 +99,36 @@ export default class Render {
 		}
 	}
 
+	async makeDll () {
+		// 如果是重启，直接返回 todo
+		return Promise.resolve();
+		// return new Promise((resolve, reject) => {
+		// 	webpack(dllWebpackConfig.call(this), (err, stats) => {
+		// 		console.log("> [dll] generated" + '\n');
+		// 		process.stdout.write(stats.toString({
+		//       modules: true,
+		//       colors: true,
+		//       depth: false,
+		// 		}) + '\n\n')
+		// 		resolve();
+		// 	});
+		// })
+	}
+
 	/**
 	 * 初始化服务器
 	 * @return {[type]} [description]
 	 */
-	makeServer () {
+	async makeServer () {
+		await this.makeDll();
+
 		this.makeConfig();
-		
 		const publicPath = this.configs.base.output.publicPath;
 
 		this.server = new webpackDevServer(this.compiler, {
 			proxy: (this.options.proxy || {}),
 			hot: true,
-			stats: false,
+			stats: true,
 			historyApiFallback:  publicPath == '/' ? true : {
 				index: publicPath
 			},
@@ -121,10 +147,14 @@ export default class Render {
 		watcher.call(this);
 	}
 
-	// 构建文件
+	/**
+	 * 构建 production 文件 
+	 * @return {[type]} [description]
+	 */
 	async build () {
 		await this.collectFiles();
 
+		await this.makeDll(true);
 		this.makeConfig(true);
 	}
 
@@ -135,12 +165,15 @@ export default class Render {
 		this.start(true);
 	}
 
-	// 开启服务
+	/**
+	 * 开启开发服务
+	 * @param  {boolean} restart 是否重启
+	 * @return {[type]}         [description]
+	 */
 	async start (restart) {
 		await this.collectFiles();
-
 		// 初始化 dev server ? express
-		this.makeServer();
+		await this.makeServer();
 		this.server.listen(this.options.port || 8080);
 		if (!restart) {
 			this.watch();

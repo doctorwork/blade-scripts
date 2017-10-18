@@ -23,6 +23,9 @@ const _default = {
     extractCSS: true
   },
   appTemplatePath: "",
+  layout: {
+    main: "./layouts/app"
+  },
   runtime: {},
   babel: {
   	presets: ['env']
@@ -45,7 +48,7 @@ const _default = {
 		dir: "dist",
 	},
   views: {
-    notFound: './layouts/404.vue'
+    notFound: './layouts/404.vue',
   },
   type: 'mobile',
 	router: {
@@ -83,7 +86,8 @@ export default {
 		// 设置根目录
 		opts.rootDir = _opts.rootDir ? _opts.rootDir : process.cwd();
     opts.srcDir = _opts.srcDir ? join(opts.rootDir, _opts.srcDir) : opts.rootDir;
-    opts.cacheDir = join(opts.rootDir, '.cache');
+    opts.buildDir = resolve(opts.rootDir, opts.buildDir);
+    opts.cacheDir = join(opts.buildDir, '.cache');
 
     if (overriderNotFound) {
       opts.views.notFound = relativeTo(opts.buildDir, join(opts.rootDir, opts.views.notFound));
