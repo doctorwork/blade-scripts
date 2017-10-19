@@ -130,7 +130,7 @@ export default class Render {
 		this.server = new webpackDevServer(this.compiler, {
 			proxy: (this.options.proxy || {}),
 			hot: true,
-			stats: false,
+			stats: 'errors-only',
 			historyApiFallback:  publicPath == '/' ? true : {
 				index: publicPath
 			},

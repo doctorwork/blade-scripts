@@ -125,12 +125,12 @@ export default {
         rootValue: 20,
         minPixelValue: 2,
         replace: false,
-        propList: ['font', 'font-size', 'line-height', 'letter-spacing', 'height'],
+        propList: ['font', 'font-size', 'line-height', 'letter-spacing', 'height', 'width', 'margin', 'padding']
       }
     }
 
     // Postcss
-    opts.build.postcss = _.defaultsDeep(_postcss, opts.build.postcss);
+    _.defaultsDeep(opts.build.postcss, _postcss);
 
     opts.build.postcss.plugins = Object.keys(opts.build.postcss.plugins)
       .map((p) => {
