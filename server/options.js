@@ -20,7 +20,9 @@ const _default = {
   	filename: "",
   	chunkFilename: "",
     cssSourceMap: false,
-    extractCSS: true
+    extractCSS: true,
+    dll: false,
+    pretty: false
   },
   appTemplatePath: "",
   layout: {

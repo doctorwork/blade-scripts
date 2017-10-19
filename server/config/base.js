@@ -14,7 +14,7 @@ import HTMLPlugin from "html-webpack-plugin";
 import { isUrl, urlJoin } from '../utils';
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import {createLoaders} from "./loader";
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 
 /**
@@ -61,25 +61,43 @@ export default function baseConfig () {
     //   name: "manifest",
     //   minChunks: Infinity
     // }),
-    new webpack.DllReferencePlugin({
-      context: this.options.rootDir,
-      // The path to the manifest file which maps between
-      // modules included in a bundle and the internal IDs
-      // within that bundle
-      manifest: resolve(this.options.cacheDir, 'vendor-manifest.json'),
-    }),
     new AddAssetHtmlPlugin({ filepath: resolve(this.options.cacheDir,'vendor.*.js') }),
     new ExtractTextPlugin({
       filename: 'css/style.[chunkhash:8].css'// this.options.build.filenames.css
     })
   ]);
 
+  const entry = {
+    main: resolve(this.options.buildDir, 'app')
+  }
+
+  if (this.options.build.dll) {
+    plugins.push(
+    new webpack.DllReferencePlugin({
+      context: this.options.rootDir,
+      // The path to the manifest file which maps between
+      // modules included in a bundle and the internal IDs
+      // within that bundle
+      manifest: resolve(this.options.cacheDir, 'vendor-manifest.json'),
+    }))
+  } else {
+    entry.vendor = this.vendors();
+    let reg = new RegExp(entry.vendor.join('|'));
+    plugins.push(
+      new webpack.optimize.CommonsChunkPlugin({
+        name: "vendor",
+        minChunks: function(module, count) {
+          return module.context && module.context.indexOf("node_modules") !== -1 && reg.test(module.context);
+        },
+        minChunks: Infinity
+      })
+    )
+  }
+
   const rules = createLoaders.call(this);
 
   let webpackConfig = {
-    entry: {
-      main: resolve(this.options.buildDir, 'app')
-    },
+    entry,
     output: {
       path: resolve(this.options.buildDir, 'dist'),
       filename: '[name].[hash:8].js',
@@ -100,7 +118,8 @@ export default function baseConfig () {
         'static': join(this.options.srcDir, 'static'),
         '~': join(this.options.srcDir),
         '@': resolve(this.options.buildDir),
-        'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack 1,
+        'vue$': 'vue/dist/vue.esm.js', // 'vue/dist/vue.common.js' for webpack 1,
+        'lodash': 'lodash-es'
       }
     },
     resolveLoader: {
@@ -131,12 +150,13 @@ export default function baseConfig () {
     webpackConfig.plugins.push(
       new webpack.optimize.UglifyJsPlugin({
         sourceMap: false,
+        output: {
+          comments: false
+        },
+        parallel: true,
         uglifyOptions: {
           ie8: true,
-          ecma: 6
-        },
-        compress: {
-          warnings: false
+          ecma: 6,
         }
       })
     )

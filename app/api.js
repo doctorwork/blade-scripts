@@ -77,7 +77,7 @@ function request(method, url, params = {}) {
  */
 export function setup (opts) {
 	const { interceptors } = opts;
-	const defautls = _.omit(opts, 'interceptors');
+	const defautls = omit(opts, 'interceptors');
 
 	if (interceptors && interceptors.response) {
 		instance.interceptors.response.use(interceptors.response);
@@ -88,7 +88,7 @@ export function setup (opts) {
 	}
 
 	// merge with other options
-	instance.defautls =	_.defaultsDeep(defautls, instance.defautls);
+	instance.defautls =	defaultsDeep(defautls, instance.defautls);
 }
 
 /**
@@ -138,7 +138,7 @@ export function makeResource (url, actions, opts) {
 		});
 	}
 
-	return _.mapValues(schemas, (item) => {
+	return mapValues(schemas, (item) => {
 		return _makers['make' + initial(item.method)](item.url);
 	})
 }

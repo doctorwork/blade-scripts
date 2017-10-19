@@ -49,7 +49,7 @@ export default class Render {
 	 * @return {array} 
 	 */
 	vendors () {
-		return _.union(['vue', 'vue-router', 'vuex'], this.options.vendors);
+		return _.union(['vue', 'vue-router', 'vuex', 'axios'], this.options.vendors);
 	}
 
 	/**
@@ -101,7 +101,9 @@ export default class Render {
 
 	async makeDll () {
 		// 如果是重启，直接返回 todo
-		// return Promise.resolve();
+		if (!this.options.build.dll) {
+			return Promise.resolve();
+		}
 		return new Promise((resolve, reject) => {
 			console.log("> [dll] compiling" + '\n');
 			webpack(dllWebpackConfig.call(this), (err, stats) => {
