@@ -101,8 +101,7 @@ export default {
       opts.router.base = "/h5/" + levels[levels.length-1] + "/";
     }
 
-    // Postcss
-    opts.build.postcss = {
+    const _postcss = {
       sourceMap: opts.build.cssSourceMap,
       plugins: {
         // https://github.com/postcss/postcss-import
@@ -116,9 +115,22 @@ export default {
         // https://github.com/postcss/postcss-url
         'postcss-url': {},
         // http://cssnext.io/postcss
-        'postcss-cssnext': {}
+        'postcss-cssnext': {},
+
       }
     }
+
+    if (opts.type == 'mobile') {
+      _postcss.plugins['postcss-pxtorem'] = {
+        rootValue: 20,
+        minPixelValue: 2,
+        replace: false,
+        propList: ['font', 'font-size', 'line-height', 'letter-spacing', 'height'],
+      }
+    }
+
+    // Postcss
+    opts.build.postcss = _.defaultsDeep(_postcss, opts.build.postcss);
 
     opts.build.postcss.plugins = Object.keys(opts.build.postcss.plugins)
       .map((p) => {

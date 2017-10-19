@@ -20,7 +20,7 @@ import InstallComponents from "./components";
 
 <% if (opts.type == 'mobile') { %>
 // 设置 rem
-document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
+document.documentElement.style.fontSize = '20px';
 <% } %>
 
 // 插件注入
