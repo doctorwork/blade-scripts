@@ -7,12 +7,14 @@ export const instance = axios.create();
 
 instance.defautls = {
 	timeout: 10000,
-	withCredentials: true
+	withCredentials: true,
+	headers: {
+		'content-type': 'application/x-www-form-urlencoded'
+	}
 };
 
 // 全局配置
 const requestInterceptor = instance.interceptors.request.use((config) => {
-	config.headers['content-type'] = 'application/x-www-form-urlencoded';
 	return config;
 });
 /**
@@ -78,7 +80,6 @@ export function setup (opts) {
 	const defautls = _.omit(opts, 'interceptors');
 
 	if (interceptors && interceptors.response) {
-		instance.interceptors.response.eject(responseInterceptor);
 		instance.interceptors.response.use(interceptors.response);
 	}
 
