@@ -1,21 +1,28 @@
 /*
-* @Author: insane.luojie
-* @Date:   2017-09-18 18:36:03
-* @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-29 11:49:33
-*/
+ * @Author: insane.luojie
+ * @Date:   2017-09-18 18:36:03
+ * @Last Modified by:   insane.luojie
+ * @Last Modified time: 2017-09-29 11:49:33
+ */
 
 import PagesPlugin from "../plugins/pages";
-import {resolve, join} from "path";
+import {
+  resolve,
+  join
+} from "path";
 import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin'
 import ProgressBarPlugin from 'progress-bar-webpack-plugin'
 import webpack from "webpack";
 import HTMLPlugin from "html-webpack-plugin";
-import { isUrl, urlJoin } from '../utils';
+import {
+  isUrl,
+  urlJoin
+} from '../utils';
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
-import {createLoaders} from "./loader";
+import {
+  createLoaders
+} from "./loader";
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
-const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 
 /**
  * webpack plugins
@@ -26,7 +33,7 @@ let plugins = [
   new ProgressBarPlugin()
 ];
 
-export default function baseConfig () {
+export default function baseConfig() {
   const nodeModulesDir = join(__dirname, '..', '..', '..', 'node_modules')
   const HTMLPluginConfig = Object.assign({
     filename: 'index.html',
@@ -34,16 +41,17 @@ export default function baseConfig () {
     inject: true,
     title: this.options.title,
     chunksSortMode: 'dependency'
-  }, { base: this.options.router.base || '/' });
+  }, {
+    base: this.options.router.base || '/'
+  });
 
   const envVars = Object.assign(this.options.env.default, this.options.env[process.env.NODE_ENV]);
 
   plugins = plugins.concat([
     new HTMLPlugin(HTMLPluginConfig),
-    new webpack.DefinePlugin(Object.assign(
-      {
+    new webpack.DefinePlugin(Object.assign({
         'process.env.NODE_ENV': JSON.stringify(this.options.dev ? 'development' : 'production')
-      }, 
+      },
       ...Object.keys(envVars).map((item) => {
         return {
           [item]: JSON.stringify(envVars[item])
@@ -51,19 +59,12 @@ export default function baseConfig () {
       })
     )),
     new PagesPlugin(),
-    // new webpack.optimize.CommonsChunkPlugin({ 
-    //   names: ["common", "vendor"],
-    //   minChunks: 3
-    //   // minChunks: Infinity,
-    //   // filename: 'vendor.[hash:8].js',
-    // }),
     // new webpack.optimize.CommonsChunkPlugin({
     //   name: "manifest",
     //   minChunks: Infinity
     // }),
-    new AddAssetHtmlPlugin({ filepath: resolve(this.options.cacheDir,'vendor.*.js') }),
     new ExtractTextPlugin({
-      filename: 'css/style.[chunkhash:8].css'// this.options.build.filenames.css
+      filename: 'css/style.[chunkhash:8].css' // this.options.build.filenames.css
     })
   ]);
 
@@ -73,20 +74,20 @@ export default function baseConfig () {
 
   if (this.options.build.dll) {
     plugins.push(
-    new webpack.DllReferencePlugin({
-      context: this.options.rootDir,
-      // The path to the manifest file which maps between
-      // modules included in a bundle and the internal IDs
-      // within that bundle
-      manifest: resolve(this.options.cacheDir, 'vendor-manifest.json'),
-    }))
+      new webpack.DllReferencePlugin({
+        context: this.options.rootDir,
+        // The path to the manifest file which maps between
+        // modules included in a bundle and the internal IDs
+        // within that bundle
+        manifest: resolve(this.options.cacheDir, 'vendor-manifest.json'),
+      }))
   } else {
     entry.vendor = this.vendors();
-    let reg = new RegExp(entry.vendor.join('|'));
+    let reg = new RegExp(this.vendors().join('|'));
     plugins.push(
       new webpack.optimize.CommonsChunkPlugin({
         name: "vendor",
-        minChunks: function(module, count) {
+        minChunks: function (module, count) {
           return module.context && module.context.indexOf("node_modules") !== -1 && reg.test(module.context);
         },
         minChunks: Infinity
@@ -102,9 +103,9 @@ export default function baseConfig () {
       path: resolve(this.options.buildDir, 'dist'),
       filename: '[name].[hash:8].js',
       chunkFilename: '[name].[chunkhash:8].js',
-      publicPath: (isUrl(this.options.build.publicPath)
-        ? this.options.build.publicPath
-        : urlJoin(this.options.router.base, this.options.build.publicPath))
+      publicPath: (isUrl(this.options.build.publicPath) ?
+        this.options.build.publicPath :
+        urlJoin(this.options.router.base, this.options.build.publicPath))
     },
     plugins,
     name: "base",
@@ -132,10 +133,11 @@ export default function baseConfig () {
   }
 
   if (this.options.dev) {
-    webpackConfig.entry.main = [
-      resolve(__dirname, 'reload'),
-      webpackConfig.entry.main
-    ]
+    // webpackConfig.entry.main = [
+    //   'webpack/hot/dev-server',
+    //   resolve(__dirname, 'reload'),
+    //   webpackConfig.entry.main
+    // ]
 
     webpackConfig.plugins.push(
       new webpack.HotModuleReplacementPlugin(),

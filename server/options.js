@@ -1,36 +1,47 @@
 /*
-* @Author: insane.luojie
-* @Date:   2017-09-20 11:52:45
-* @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-29 14:43:32
-*/
-import {join, resolve, sep} from "path";
-import {existsSync} from "fs";
+ * @Author: insane.luojie
+ * @Date:   2017-09-20 11:52:45
+ * @Last Modified by:   insane.luojie
+ * @Last Modified time: 2017-09-29 14:43:32
+ */
+import {
+  join,
+  resolve,
+  sep
+} from "path";
+import {
+  existsSync
+} from "fs";
 import _ from "lodash";
-import { isUrl, isPureObject, relativeTo } from './utils'
+import {
+  isUrl,
+  isPureObject,
+  relativeTo
+} from './utils'
 
 const _default = {
   mode: 'spa',
+  host: '127.0.0.1',
   port: 8080,
-	buildDir: ".blade",
-	bladeDir: resolve(__dirname, "../app"),
+  buildDir: ".blade",
+  bladeDir: resolve(__dirname, "../app"),
   dev: process.env.NODE_ENV !== 'production',
   build: {
-  	publicPath: "/",
-  	filename: "",
-  	chunkFilename: "",
+    publicPath: "/",
+    filename: "",
+    chunkFilename: "",
     cssSourceMap: false,
     extractCSS: true,
     dll: false,
-    pretty: false
+    pretty: false,
+    postcss: {}
   },
   appTemplatePath: "",
   layout: {
     main: "./layouts/app"
   },
   runtime: {},
-  babel: {
-  },
+  babel: {},
   eslint: {
 
   },
@@ -45,20 +56,20 @@ const _default = {
     },
     chokidar: {}
   },
-	release: {
-		dir: "dist",
-	},
+  release: {
+    dir: "dist",
+  },
   views: {
     notFound: './layouts/404.vue',
   },
   vendors: [],
   type: 'mobile',
-	router: {
-		mode: "history",
-		linkActiveClass: "b-link-active",
-		linkExactActiveClass: "b-c-link-active",
-		fallback: false
-	}
+  router: {
+    mode: "history",
+    linkActiveClass: "b-link-active",
+    linkExactActiveClass: "b-c-link-active",
+    fallback: false
+  }
 };
 
 function loadWebConfig() {
@@ -71,22 +82,22 @@ function loadWebConfig() {
 
 
 export default {
-	create (_opts) {
+  create(_opts) {
     const _conf = loadWebConfig();
 
-		const opts = Object.assign({}, _opts, _conf);
+    const opts = Object.assign({}, _opts, _conf);
 
     let overriderNotFound = false;
     if (opts.views && opts.views.notFound) {
       overriderNotFound = true;
     }
 
-		_.defaultsDeep(opts, _default);
+    _.defaultsDeep(opts, _default);
 
     // 如果native打包，强制使用 router.mode = 'hash'; todo
 
-		// 设置根目录
-		opts.rootDir = _opts.rootDir ? _opts.rootDir : process.cwd();
+    // 设置根目录
+    opts.rootDir = _opts.rootDir ? _opts.rootDir : process.cwd();
     opts.srcDir = _opts.srcDir ? join(opts.rootDir, _opts.srcDir) : opts.rootDir;
     opts.buildDir = resolve(opts.rootDir, opts.buildDir);
     opts.cacheDir = join(opts.buildDir, '.cache');
@@ -94,11 +105,11 @@ export default {
     if (overriderNotFound) {
       opts.views.notFound = relativeTo(opts.buildDir, join(opts.rootDir, opts.views.notFound));
     }
-    
+
     // router base
     if (!opts.router.base) {
       let levels = opts.rootDir.split(sep);
-      opts.router.base = "/h5/" + levels[levels.length-1] + "/";
+      opts.router.base = "/h5/" + levels[levels.length - 1] + "/";
     }
 
     const _postcss = {
@@ -125,7 +136,7 @@ export default {
         rootValue: 20,
         minPixelValue: 2,
         replace: false,
-        propList: ['font', 'font-size', 'line-height', 'letter-spacing', 'height', 'width', 'margin', 'padding']
+        propList: ['*']
       }
     }
 
@@ -138,7 +149,7 @@ export default {
         return plugin(opts.build.postcss.plugins[p]);
       })
 
-		// 获取 babel, eslint 设置
+    // 获取 babel, eslint 设置
     opts.babelOptions = _.defaults(opts.babel, {
       babelrc: false,
       cacheDirectory: !!opts.dev
@@ -149,12 +160,12 @@ export default {
       ]
     }
 
-	  // If app.html is defined, set the template path to the user template
-	  opts.appTemplatePath = resolve(opts.buildDir, 'views/app.html')
-	  if (existsSync(join(opts.srcDir, 'app.html'))) {
-	    opts.appTemplatePath = join(opts.srcDir, 'app.html')
-	  }
+    // If app.html is defined, set the template path to the user template
+    opts.appTemplatePath = resolve(opts.buildDir, 'views/app.html')
+    if (existsSync(join(opts.srcDir, 'app.html'))) {
+      opts.appTemplatePath = join(opts.srcDir, 'app.html')
+    }
 
-		return opts;
-	}
+    return opts;
+  }
 }
