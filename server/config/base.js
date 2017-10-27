@@ -5,11 +5,11 @@
  * @Last Modified time: 2017-09-29 11:49:33
  */
 
-import PagesPlugin from "../plugins/pages";
 import {
   resolve,
   join
 } from "path";
+
 import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin'
 import ProgressBarPlugin from 'progress-bar-webpack-plugin'
 import webpack from "webpack";
@@ -45,12 +45,12 @@ export default function baseConfig() {
     base: this.options.router.base || '/'
   });
 
-  const envVars = Object.assign(this.options.env.default, this.options.env[process.env.NODE_ENV]);
+  const envVars = this.options.env;
 
   plugins = plugins.concat([
     new HTMLPlugin(HTMLPluginConfig),
     new webpack.DefinePlugin(Object.assign({
-        'process.env.NODE_ENV': JSON.stringify(this.options.dev ? 'development' : 'production')
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
       },
       ...Object.keys(envVars).map((item) => {
         return {
@@ -58,7 +58,6 @@ export default function baseConfig() {
         }
       })
     )),
-    new PagesPlugin(),
     // new webpack.optimize.CommonsChunkPlugin({
     //   name: "manifest",
     //   minChunks: Infinity
@@ -133,12 +132,6 @@ export default function baseConfig() {
   }
 
   if (this.options.dev) {
-    // webpackConfig.entry.main = [
-    //   'webpack/hot/dev-server',
-    //   resolve(__dirname, 'reload'),
-    //   webpackConfig.entry.main
-    // ]
-
     webpackConfig.plugins.push(
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
@@ -150,6 +143,10 @@ export default function baseConfig() {
     )
   } else {
     webpackConfig.plugins.push(
+      new webpack.LoaderOptionsPlugin({
+        minimize: true,
+        debug: false
+      }),
       new webpack.optimize.UglifyJsPlugin({
         sourceMap: false,
         output: {
