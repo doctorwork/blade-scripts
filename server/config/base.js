@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-18 18:36:03
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-01 19:14:00
+ * @Last Modified time: 2017-11-02 14:27:43
  */
 
 import { resolve, join } from "path";
@@ -15,7 +15,8 @@ import { isUrl, urlJoin } from '../utils';
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import { createLoaders } from "./loader";
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
-import { error } from "util";
+import { error, isObject } from "util";
+import _ from "lodash";
 
 /**
  * webpack plugins
@@ -38,19 +39,19 @@ export default function baseConfig() {
         base: this.options.router.base || '/'
     });
 
-    const envVars = this.options.env;
+    let envVars = Object.assign({
+        'PRODUCTION': process.env.NODE_ENV == 'production',
+        'process.env.NODE_ENV': process.env.NODE_ENV
+    }, this.options.env.default, this.options.env[process.env.NODE_ENV]);
+
+    const envs = {};
+    _.forEach(envVars, (val, key) => {
+        envs[key] = JSON.stringify(val);
+    })
 
     plugins = plugins.concat([
         new HTMLPlugin(HTMLPluginConfig),
-        new webpack.DefinePlugin(Object.assign({
-                'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-            },
-            ...Object.keys(envVars).map((item) => {
-                return {
-                    [item]: JSON.stringify(envVars[item])
-                }
-            })
-        )),
+        new webpack.DefinePlugin(envs),
         new ExtractTextPlugin({
             filename: 'css/style.[chunkhash:8].css' // this.options.build.filenames.css
         })
