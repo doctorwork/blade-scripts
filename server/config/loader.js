@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-27 10:16:06
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-02 13:08:54
+ * @Last Modified time: 2017-11-09 10:27:17
  */
 
 export function createLoaders() {
@@ -20,10 +20,6 @@ export function createLoaders() {
     let imgLoader = [
         'file-loader?limit=10000&name=imgs/[hash:7].[ext]'
     ];
-
-    if (!this.options.build.noimg) {
-        imgLoader.push('image-webpack-loader');
-    }
 
     Array.prototype.push.apply(rules, [{
         test: /\.json$/,
@@ -49,6 +45,9 @@ export function createLoaders() {
             limit: 1000, // 1 KO
             name: 'fonts/[name].[hash:7].[ext]'
         }
+    }, {
+        test: /\.styl$/,
+        loaders: this.styleLoader('styl', ['stylus-loader'])
     }, {
         test: /\.less$/,
         loaders: this.styleLoader('less', ['less-loader'])

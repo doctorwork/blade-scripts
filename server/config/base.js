@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-18 18:36:03
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-02 14:27:43
+ * @Last Modified time: 2017-11-07 21:20:02
  */
 
 import { resolve, join } from "path";
@@ -109,7 +109,7 @@ export default function baseConfig() {
                 '~': join(this.options.srcDir),
                 '@': resolve(this.options.buildDir),
                 'vue$': 'vue/dist/vue.esm.js', // 'vue/dist/vue.common.js' for webpack 1,
-                'lodash': 'lodash-es'
+                'lodash': 'lodash'
             }
         },
         resolveLoader: {
