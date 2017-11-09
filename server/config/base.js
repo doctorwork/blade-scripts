@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-18 18:36:03
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-07 21:20:02
+ * @Last Modified time: 2017-11-09 19:56:11
  */
 
 import { resolve, join } from "path";
@@ -118,7 +118,7 @@ export default function baseConfig() {
                 nodeModulesDir
             ]
         },
-        devtool: this.options.dev ? 'cheap-module-source-map' : 'hidden-source-map'
+        devtool: this.options.dev ? 'cheap-eval-source-map' : 'hidden-source-map'
     }
 
     if (this.options.dev) {
