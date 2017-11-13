@@ -1,9 +1,9 @@
 /*
-* @Author: insane.luojie
-* @Date:   2017-09-18 10:14:20
-* @Last Modified by:   insane.luojie
-* @Last Modified time: 2017-09-29 14:36:35
-*/
+ * @Author: insane.luojie
+ * @Date:   2017-09-18 10:14:20
+ * @Last Modified by: insane.luojie
+ * @Last Modified time: 2017-11-10 18:03:06
+ */
 /*eslint-disable*/
 
 import Vue from 'vue'
@@ -47,53 +47,58 @@ function recursiveRoutes(routes, tab, components) {
 }
 const _components = []
 const _routes = recursiveRoutes(router.routes, '\t\t', _components)
-uniqBy(_components, '_name').forEach((route) => { %>const <%= route._name %> = () => import('<%= relativeToBuild(route.component) %>' /* webpackChunkName: "<%= wChunk(route.chunkName) %>" */).then(m => m.default || m)
+uniqBy(_components, '_name').forEach((route) => { %>
+const <%= route._name %> = () =>
+import ('<%= relativeToBuild(route.component) %>' /* webpackChunkName: "<%= wChunk(route.chunkName) %>" */ ).then(m => m.default || m)
 <% }) %>
 
 <% if (router.scrollBehavior) { %>
 const scrollBehavior = <%= serialize(router.scrollBehavior).replace('scrollBehavior(', 'function(').replace('function function', 'function') %>
 <% } else { %>
 const scrollBehavior = (to, from, savedPosition) => {
-  // SavedPosition is only available for popstate navigations.
-  if (savedPosition) {
-    return savedPosition
-  } else {
-    let position = {}
-    // If no children detected
-    if (to.matched.length < 2) {
-      // Scroll to the top of the page
-      position = { x: 0, y: 0 }
+    // SavedPosition is only available for popstate navigations.
+    if (savedPosition) {
+        return savedPosition
+    } else {
+        let position = {}
+        // If no children detected
+        if (to.matched.length < 2) {
+            // Scroll to the top of the page
+            position = { x: 0, y: 0 }
+        } else if (to.matched.some((r) => r.components.default.scrollToTop)) {
+            // If one of the children has scrollToTop option set to true
+            position = { x: 0, y: 0 }
+        }
+        // If link has anchor, scroll to anchor by returning the selector
+        if (to.hash) {
+            position = { selector: to.hash }
+        }
+        return position
     }
-    else if (to.matched.some((r) => r.components.default.scrollToTop)) {
-      // If one of the children has scrollToTop option set to true
-      position = { x: 0, y: 0 }
-    }
-    // If link has anchor, scroll to anchor by returning the selector
-    if (to.hash) {
-      position = { selector: to.hash }
-    }
-    return position
-  }
 }
 <% } %>
 
 // 路由插件处理
 
-export function createRouter () {
-  const router = new Router({
-    mode: '<%= router.mode %>',
-    base: '<%= router.base %>',
-    linkActiveClass: '<%= router.linkActiveClass %>',
-    linkExactActiveClass: '<%= router.linkExactActiveClass %>',
-    scrollBehavior,
-    routes: [
-    <%= _routes %>,
-    <%= _notFound %>
-    ]
-  })
+export function createRouter() {
+    const router = new Router({
+        mode: '<%= router.mode %>',
+        base: '<%= router.base %>',
+        linkActiveClass: '<%= router.linkActiveClass %>',
+        linkExactActiveClass: '<%= router.linkExactActiveClass %>',
+        scrollBehavior,
+        routes: [
+            <%= _routes %>,
+            <%= _notFound %>
+        ]
+    })
 
-  <% if(opts.plugins.route) { %>
-  router.beforeEach(beforeEachRoute)
-  <% } %>
-  return router;
+    <% if(opts.plugins.route) { %>
+    if (beforeEachRoute.length == 3) {
+        router.beforeEach(beforeEachRoute);
+    } else {
+        beforeEachRoute(router);
+    }
+    <% } %>
+    return router;
 }
