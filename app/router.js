@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-18 10:14:20
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-10 18:03:06
+ * @Last Modified time: 2017-11-15 11:52:47
  */
 /*eslint-disable*/
 
@@ -19,10 +19,10 @@ import beforeEachRoute from '<%= opts.plugins.route %>';
 import notFound from '<%= opts.views.notFound %>';
 <%
     _notFound += '{\n'
-    _notFound += tab + '\nname: "notFound",'
-    _notFound += tab + '\npath: "*",'
-    _notFound += tab + '\ncomponent: notFound,'
-    _notFound += tab + '\n}'
+    _notFound += tab + 'name: "notFound",\n'
+    _notFound += tab + 'path: "*",\n'
+    _notFound += tab + 'component: notFound,\n'
+    _notFound += tab + '}'
   }
 %>
 Vue.use(Router)
@@ -88,8 +88,8 @@ export function createRouter() {
         linkExactActiveClass: '<%= router.linkExactActiveClass %>',
         scrollBehavior,
         routes: [
-            <%= _routes %>,
-            <%= _notFound %>
+        <%= _routes %>,
+        <%= _notFound %>
         ]
     })
 
