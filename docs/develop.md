@@ -123,3 +123,6 @@ const newtest = get("/api/test");
     this.$model('test').then(data => this.list = data);
 
 ```
+
+## 静态资源
+
