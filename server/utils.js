@@ -99,6 +99,7 @@ export function createRoutes(files, srcDir) {
         }
 
         obj.name = name;
+        obj.component = r(srcDir, file);
         obj.path = '/' + filePath[filePath.length - 1];
         obj.chunkName = file.replace(/\.vue$/, '');
     });
