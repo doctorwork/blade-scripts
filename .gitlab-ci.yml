@@ -16,5 +16,5 @@ Test SSH:
 #   - ssh git@gitlab.com
 
   # try to clone yourself, the SSH_PRIVATE_KEY was added as deploy key to this repository
-  - scp -r ./docs www@localhost:/home/www/docs/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}
+  - scp -rp ./docs www@localhost:/home/www/docs/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}
 
