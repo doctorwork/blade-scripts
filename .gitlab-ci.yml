@@ -8,8 +8,6 @@ image: node:8
 
 Test SSH:
   script:
-  # try to connect to GitLab.com
-#   - ssh git@gitlab.com
 
   # try to clone yourself, the SSH_PRIVATE_KEY was added as deploy key to this repository
   - ssh www@localhost "mkdir -p /home/www/docs/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
