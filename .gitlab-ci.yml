@@ -1,9 +1,5 @@
 image: node:8
 
-cache:
-  paths:
-  - node_modules/
-
 # deploy:
 #   stage: deploy
 #   script: "scp -r ./docs www@dev-server:/home/www/wikis/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
@@ -17,5 +13,5 @@ Test SSH:
 
   # try to clone yourself, the SSH_PRIVATE_KEY was added as deploy key to this repository
   - ssh www@localhost "mkdir -p /home/www/docs/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
-  - scp -r ./docs www@localhost:/home/www/docs/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}
+  - scp -r ./docs www@localhost:/home/www/docs/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}/
 
