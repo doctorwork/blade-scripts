@@ -74,17 +74,16 @@ export function relativeTo() {
 }
 
 function split_path(file) {
-    return file.replace(/^pages\//, '').replace(/\.vue$/, '')
+    return file.replace(/^pages\//, '').replace(/\.vue$/, '').split('/')
 }
-
 
 export function createRoutes(files, srcDir) {
 
     let router = {};
 
     files.forEach((file) => {
-        // 只解析两层目录 
-        let filePath = split_path(file).split('/');
+        
+        let filePath = split_path(file);
         let key = filePath[0];
         let obj = router[key] || (router[key] = {});
         let name = key;
