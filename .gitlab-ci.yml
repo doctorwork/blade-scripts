@@ -6,7 +6,7 @@ cache:
 
 # deploy:
 #   stage: deploy
-#   script: "scp -R ./docs www@dev-server:/home/www/wikis/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
+#   script: "scp -r ./docs www@dev-server:/home/www/wikis/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
 #   environment:
 #     name: development
 
@@ -16,5 +16,5 @@ Test SSH:
 #   - ssh git@gitlab.com
 
   # try to clone yourself, the SSH_PRIVATE_KEY was added as deploy key to this repository
-  - git clone http://insane:luojie123@59.151.4.126/insane/blade-scripts.git
+  - scp -r ./docs www@localhost:/home/www/docs/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}
 
