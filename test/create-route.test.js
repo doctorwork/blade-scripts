@@ -22,24 +22,20 @@ describe("create routes", () => {
 		"pages/uc.vue"
 	];
 
+	let dir = "/";
+	let results = createRoutes(routes, dir);
+	let exclude = {
+		chunkName: "pages/clinic/log/diagnosis",
+		component: "/pages/clinic/log/diagnosis.vue",
+		name: "clinic-log-diagnosis",
+		path: "/clinic/log/diagnosis"
+	};
+
 	it("should routes be nested", () => {
-		let dir = "/";
-		let results = createRoutes(routes, dir);
-		let exclude = {
-			chunkName: "pages/clinic/log/diagnosis",
-			component: "/pages/clinic/log/diagnosis.vue",
-			name: "clinic-log-diagnosis",
-			path: "/clinic/log/diagnosis"
-		};
-
-		// 输出为数组
-		// expect([
-		// 	"Bob",
-		// 	"Eve"
-		// ]).not.toEqual(expect.arrayContaining(expected));
-
 		expect(results).not.toEqual(expect.arrayContaining([exclude]));
+	});
 
+	it("noly 9 roues", () => {
 		// 9 个 总路由
 		expect(Object.keys(results).length).toEqual(9);
 	});
