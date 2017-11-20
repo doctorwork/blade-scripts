@@ -32,7 +32,6 @@ describe("create routes", () => {
 	};
 
 	it("should routes be nested", () => {
-		expect([1, 2]).not.toEqual(expect.arrayContaining([3]));
 		expect(results).not.toEqual(expect.arrayContaining([exclude]));
 	});
 
