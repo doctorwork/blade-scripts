@@ -85,8 +85,9 @@ export function createRoutes(files, srcDir) {
     files.forEach((file) => {
         // 只解析两层目录 
         let filePath = split_path(file).split('/');
-        let obj = router[filePath[0]] || (router[filePath[0]] = {});
-        let name = filePath[0];
+        let key = filePath[0];
+        let obj = router[key] || (router[key] = {});
+        let name = key;
 
         if (filePath.length > 1) {
 
