@@ -108,8 +108,9 @@ export function createRoutes(files, srcDir) {
     let ary = changeDicToAry(router);
 
     for (let item of ary) {
-        if (item.children) {
+        if (item.name === 'index') {
             item.path = '/';
+            break;
         }
     }
     return ary;
@@ -122,15 +123,14 @@ function changeDicToAry(router) {
         if (typeof item === 'object' && key !== 'children') {
             result.push(item);
 
+            if (item.path === '/index') {
+                item.path = '2';
+            }
+
             let children = changeDicToAry(item);
+
             if (children.length > 0) {
-                for (let childItem of children) {
-                    if (childItem.path === '/index') {
-                        childItem.path = '';
-                        break;
-                    }
-                }
-                
+
                 delete item.name;
                 item.children = children;
             }
@@ -140,6 +140,7 @@ function changeDicToAry(router) {
     }
     return result;
 }
+
 export function cleanChildrenRoutes(routes, isChild = false) {
     let start = -1;
     let routesIndex = [];

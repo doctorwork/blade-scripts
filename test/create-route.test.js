@@ -35,6 +35,32 @@ describe("create routes", () => {
 		expect(results).not.toEqual(expect.arrayContaining([exclude]));
 	});
 
+	it("page/index 对应的path 应该为/", () => {
+		
+		for(let item of results) {
+			if(item.name === 'index') {
+				expect(item.path).toEqual('/')
+				break;
+			}
+		}
+	});
+
+	it("包含子目录的path应该为空字符串", () => {
+		function check(items) {
+
+		}
+
+		if(!check(results)) {
+				
+		}
+
+		for(let item of results) {
+			if(item.children) {
+				expect(item.path).toEqual('')
+			}
+		}
+	});
+
 	it("noly 9 roues", () => {
 		// 9 个 总路由
 		expect(Object.keys(results).length).toEqual(9);
