@@ -10,6 +10,7 @@ const routes = [
   "pages/clinic/log/bills.vue",
   "pages/clinic/log/checkup.vue",
   "pages/clinic/log/diagnosis.vue",
+  "pages/clinic/log/index.vue",
   "pages/feedback.vue",
   "pages/index.vue",
   "pages/messages.vue",

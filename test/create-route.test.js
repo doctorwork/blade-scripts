@@ -12,6 +12,7 @@ describe("create routes", () => {
 		"pages/clinic/log/bills.vue",
 		"pages/clinic/log/checkup.vue",
 		"pages/clinic/log/diagnosis.vue",
+		"pages/clinic/log/index.vue",
 		"pages/feedback.vue",
 		"pages/index.vue",
 		"pages/messages.vue",
@@ -45,21 +46,29 @@ describe("create routes", () => {
 		}
 	});
 
-	// it("包含子目录的path应该为空字符串", () => {
-	// 	function check(items) {
+	it("除开第一级目录外，其他目录中的index对应的path应该为空字符串,name应该不包含index，且父data的name需要删除", () => {
+		function check(items) {
+			
+			for(let item of items) {
+				if(!!item.children) {
+					for(let childItem of item.children) {
+						if(childItem.chunkName.indexOf('index')>-1) {
+							if(childItem.path !== '' || 'name' in item || ~childItem.name.indexOf('index')) {
 
-	// 	}
+								return false;
+							}
+						}	
+					}
+					if(!check(item.children)) {
+							return false;
+					}
+				}
+			}
+			return true;
+		}
 
-	// 	if(!check(results)) {
-				
-	// 	}
-
-	// 	for(let item of results) {
-	// 		if(item.children) {
-	// 			expect(item.path).toEqual('')
-	// 		}
-	// 	}
-	// });
+		expect(check(results)).toBeTruthy()
+	});
 
 	it("noly 9 roues", () => {
 		// 9 个 总路由
