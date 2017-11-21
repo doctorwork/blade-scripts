@@ -76,7 +76,9 @@ function split_path(file) {
 		.split("/");
 }
 
-export function createRoutes(files, srcDir) {
+
+
+function createRoutes(files, srcDir) {
 
   let router = {};
 
@@ -96,11 +98,13 @@ export function createRoutes(files, srcDir) {
     }
 
     obj.name = name;
+    obj.component = r(srcDir, file);
     obj.path = '/' + filePath[filePath.length - 1];
     obj.chunkName = file.replace(/\.vue$/, '');
   });
 
-  return changeDicToAry(router);
+  let ary = changeDicToAry(router);
+  return ary;
 }
 
 function changeDicToAry(router) {
@@ -127,7 +131,6 @@ function changeDicToAry(router) {
   }
   return result;
 }
-
 export function cleanChildrenRoutes(routes, isChild = false) {
 	let start = -1;
 	let routesIndex = [];
