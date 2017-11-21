@@ -45,21 +45,21 @@ describe("create routes", () => {
 		}
 	});
 
-	it("包含子目录的path应该为空字符串", () => {
-		function check(items) {
+	// it("包含子目录的path应该为空字符串", () => {
+	// 	function check(items) {
 
-		}
+	// 	}
 
-		if(!check(results)) {
+	// 	if(!check(results)) {
 				
-		}
+	// 	}
 
-		for(let item of results) {
-			if(item.children) {
-				expect(item.path).toEqual('')
-			}
-		}
-	});
+	// 	for(let item of results) {
+	// 		if(item.children) {
+	// 			expect(item.path).toEqual('')
+	// 		}
+	// 	}
+	// });
 
 	it("noly 9 roues", () => {
 		// 9 个 总路由
