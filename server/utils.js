@@ -78,7 +78,7 @@ function split_path(file) {
 
 
 
-function createRoutes(files, srcDir) {
+export function createRoutes(files, srcDir) {
 
   let router = {};
 
