@@ -27,7 +27,6 @@ function split_path(file) {
   return file.replace(/^pages\//, '').replace(/\.vue$/, '')
 }
 
-
 function createRoutes(files, srcDir) {
 
   let router = {};
@@ -43,7 +42,10 @@ function createRoutes(files, srcDir) {
       for (let i = 1; i < filePath.length; i++) {
         let key = filePath[i];
         obj = obj[key] || (obj[key] = Object.create(null));
-        name += '-' + key;
+
+        if(key !== 'index') {
+          name += '-' + key;
+        }
       }
     }
 
@@ -53,6 +55,12 @@ function createRoutes(files, srcDir) {
   });
 
   let ary = changeDicToAry(router);
+
+  for(let item of ary) {
+    if(item.children) {
+      item.path = '/';
+    }
+  }
   return ary;
 }
 
@@ -67,11 +75,12 @@ function changeDicToAry(router) {
       if (children.length > 0) {
         for(let childItem of children) {
           if(childItem.path === '/index') {
-            delete item.name;
             childItem.path = '';
-            childItem.name = 'index';
+            break;
           }
         }
+        
+        delete item.name;
         item.children = children;
       }
 
@@ -79,50 +88,4 @@ function changeDicToAry(router) {
     }
   }
   return result;
-}
-
-function cleanChildrenRoutes(routes, isChild = false) {
-  let start = -1
-  let routesIndex = []
-  routes.forEach((route) => {
-    if (/-index$/.test(route.name) || route.name === 'index') {
-      // Save indexOf 'index' key in name
-      let res = route.name.split('-')
-      let s = res.indexOf('index')
-      start = (start === -1 || s < start) ? s : start
-      routesIndex.push(res)
-    }
-  })
-  routes.forEach((route) => {
-    route.path = (isChild) ? route.path.replace('/', '') : route.path
-    if (route.path.indexOf('?') > -1) {
-      let names = route.name.split('-')
-      let paths = route.path.split('/')
-      if (!isChild) {
-        paths.shift()
-      } // clean first / for parents
-      routesIndex.forEach((r) => {
-        let i = r.indexOf('index') - start //  children names
-        if (i < paths.length) {
-          for (let a = 0; a <= i; a++) {
-            if (a === i) {
-              paths[a] = paths[a].replace('?', '')
-            }
-            if (a < i && names[a] !== r[a]) {
-              break
-            }
-          }
-        }
-      })
-      route.path = (isChild ? '' : '/') + paths.join('/')
-    }
-    route.name = route.name.replace(/-index$/, '')
-    if (route.children) {
-      if (route.children.find((child) => child.path === '')) {
-        delete route.name
-      }
-      route.children = cleanChildrenRoutes(route.children, true)
-    }
-  })
-  return routes
 }
