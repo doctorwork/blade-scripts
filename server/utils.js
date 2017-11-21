@@ -77,39 +77,55 @@ function split_path(file) {
 }
 
 export function createRoutes(files, srcDir) {
-	let routes = [];
 
-	files = files.sort((a, b) => {
-		return split_path(a).length > split_path(b).length;
-	});
+  let router = {};
 
-	files.forEach(file => {
-		// 只解析两层目录
-		let folders = split_path(file);
-		let route = { name: "", path: "", component: r(srcDir, file) };
-		let parent = routes;
+  files.forEach((file) => {
+    // 只解析两层目录 
+    let filePath = split_path(file);
+    let obj = router[filePath[0]] || (router[filePath[0]] = {});
+    let name = filePath[0];
 
-		folders.forEach((key, i) => {
-			route.name = route.name ? route.name + "-" + key : key;
-			route.chunkName = file.replace(/\.vue$/, "");
+    if (filePath.length > 1) {
 
-			let child = _.find(parent, { name: route.name });
-			if (child) {
-				child.children = child.children || [];
-				parent = child.children;
-				route.path = "";
-			} else {
-				if (key == "index" && folders.length === i + 1) {
-					route.path += i > 0 ? "" : "/";
-				} else {
-					route.path += "/" + key;
-				}
-			}
-		});
-		parent.push(route);
-	});
+      for (let i = 1; i < filePath.length; i++) {
+        let key = filePath[i];
+        obj = obj[key] || (obj[key] = Object.create(null));
+        name += '-' + key;
+      }
+    }
 
-	return cleanChildrenRoutes(routes);
+    obj.name = name;
+    obj.path = '/' + filePath[filePath.length - 1];
+    obj.chunkName = file.replace(/\.vue$/, '');
+  });
+
+  return changeDicToAry(router);
+}
+
+function changeDicToAry(router) {
+  let result = [];
+  for (let key of Object.keys(router)) {
+    let item = router[key];
+    if (typeof item === 'object' && key !== 'children') {
+      result.push(item);
+
+      let children = changeDicToAry(item);
+      if (children.length > 0) {
+        for(let childItem of children) {
+          if(childItem.path === '/index') {
+            delete item.name;
+            childItem.path = '';
+            childItem.name = 'index';
+          }
+        }
+        item.children = children;
+      }
+
+      delete router[key];
+    }
+  }
+  return result;
 }
 
 export function cleanChildrenRoutes(routes, isChild = false) {
