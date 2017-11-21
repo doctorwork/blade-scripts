@@ -124,7 +124,7 @@ function changeDicToAry(router) {
             result.push(item);
 
             if (item.path === '/index') {
-                item.path = '2';
+                item.path = '';
             }
 
             let children = changeDicToAry(item);
