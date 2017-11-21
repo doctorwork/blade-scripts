@@ -10,7 +10,6 @@ const routes = [
   "pages/clinic/log/bills.vue",
   "pages/clinic/log/checkup.vue",
   "pages/clinic/log/diagnosis.vue",
-  "pages/clinic/log/index.vue",
   "pages/feedback.vue",
   "pages/index.vue",
   "pages/messages.vue",
@@ -43,7 +42,7 @@ function createRoutes(files, srcDir) {
         let key = filePath[i];
         obj = obj[key] || (obj[key] = Object.create(null));
 
-        if(key !== 'index') {
+        if (key !== 'index') {
           name += '-' + key;
         }
       }
@@ -55,8 +54,8 @@ function createRoutes(files, srcDir) {
   });
 
   let ary = changeDicToAry(router);
-  for(let item of ary) {
-    if(item.name === 'index') {
+  for (let item of ary) {
+    if (item.name === 'index') {
       item.path = '/';
     }
   }
@@ -70,15 +69,16 @@ function changeDicToAry(router) {
     if (typeof item === 'object' && key !== 'children') {
       result.push(item);
 
-      if(item.path === '/index') {
-        item.path = '';
-      }
-
       let children = changeDicToAry(item);
-      
+
       if (children.length > 0) {
-       
-        delete item.name;
+        for (let childrenItem of children) {
+
+          if (childrenItem.path === '/index') {
+            childrenItem.path = '';
+            delete item.name;
+          }
+        }
         item.children = children;
       }
 

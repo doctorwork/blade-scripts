@@ -115,30 +115,30 @@ export function createRoutes(files, srcDir) {
     }
     return ary;
 }
-
 function changeDicToAry(router) {
-    let result = [];
-    for (let key of Object.keys(router)) {
-        let item = router[key];
-        if (typeof item === 'object' && key !== 'children') {
-            result.push(item);
+  let result = [];
+  for (let key of Object.keys(router)) {
+    let item = router[key];
+    if (typeof item === 'object' && key !== 'children') {
+      result.push(item);
 
-            if (item.path === '/index') {
-                item.path = '';
-            }
+      let children = changeDicToAry(item);
 
-            let children = changeDicToAry(item);
+      if (children.length > 0) {
+        for (let childrenItem of children) {
 
-            if (children.length > 0) {
-
-                delete item.name;
-                item.children = children;
-            }
-
-            delete router[key];
+          if (childrenItem.path === '/index') {
+            childrenItem.path = '';
+            delete item.name;
+          }
         }
+        item.children = children;
+      }
+
+      delete router[key];
     }
-    return result;
+  }
+  return result;
 }
 
 export function cleanChildrenRoutes(routes, isChild = false) {
