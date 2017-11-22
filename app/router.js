@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-18 10:14:20
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-15 11:52:47
+ * @Last Modified time: 2017-11-22 10:51:23
  */
 /*eslint-disable*/
 
@@ -27,15 +27,23 @@ import notFound from '<%= opts.views.notFound %>';
 %>
 Vue.use(Router)
 
-<%
+const DefaultRouteComponent = {
+    template: "<router-view></router-view>"
+}
 
+<%
 function recursiveRoutes(routes, tab, components) {
   let res = ''
   routes.forEach((route, i) => {
-    route._name = '_' + hash(route.component)
     route.path = opts.routes[route.name] ? opts.routes[route.name] : route.path;
-    
-    components.push({ _name: route._name, component: route.component, name: route.name, chunkName: route.chunkName })
+
+    if (route.component == 'default') {
+        route._name = "DefaultRouteComponent";
+    } else {
+        route._name = '_' + hash(route.component)
+        components.push({ _name: route._name, component: route.component, name: route.name, chunkName: route.chunkName })
+    }
+
     res += tab + '{\n'
     res += tab + '\tpath: ' + JSON.stringify(route.path) + ',\n'
     res += tab + '\tcomponent: ' + route._name
