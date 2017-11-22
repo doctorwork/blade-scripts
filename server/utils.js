@@ -77,44 +77,43 @@ function split_path(file) {
 }
 
 
-
 export function createRoutes(files, srcDir) {
 
-    let router = {};
+  let router = {};
 
-    files.forEach((file) => {
-        // 只解析两层目录 
-        let filePath = split_path(file);
-        let obj = router[filePath[0]] || (router[filePath[0]] = {});
-        let name = filePath[0];
+  files.forEach((file) => {
+    // 只解析两层目录 
+    let filePath = split_path(file);
+    let obj = router;
+    let name = filePath[0];
+    
+    for (let i = 0; i < filePath.length; i++) {
+      let key = filePath[i];
+      obj = obj[key] || (obj[key] = Object.create(null));
 
-        if (filePath.length > 1) {
-
-            for (let i = 1; i < filePath.length; i++) {
-                let key = filePath[i];
-                obj = obj[key] || (obj[key] = Object.create(null));
-                if (key !== 'index') {
-                    name += '-' + key;
-                }
-            }
-        }
-
+      if (!("name" in obj)) {
         obj.name = name;
-        obj.component = r(srcDir, file);
-        obj.path = '/' + filePath[filePath.length - 1];
-        obj.chunkName = file.replace(/\.vue$/, '');
-    });
+        obj.path = '/' + filePath[i];
+        obj.component = 'default';
+      }
 
-    let ary = changeDicToAry(router);
-
-    for (let item of ary) {
-        if (item.name === 'index') {
-            item.path = '/';
-            break;
-        }
+      if (key !== 'index' && i != 0) {
+        name += '-' + key;
+      }
     }
-    return ary;
+    obj.component = r(srcDir, file);
+    obj.chunkName = file.replace(/\.vue$/, '');
+  });
+
+  let ary = changeDicToAry(router);
+  for (let item of ary) {
+    if (item.name === 'index') {
+      item.path = '/';
+    }
+  }
+  return ary;
 }
+
 function changeDicToAry(router) {
   let result = [];
   for (let key of Object.keys(router)) {
