@@ -71,7 +71,7 @@ function createRoutes(files, srcDir) {
 
       if (!("name" in obj)) {
         obj.name = name;
-        obj.path = '/' + filePath[i];
+        obj.path = i === 0 ? '/' + filePath[i] : filePath[i];
         obj.component = 'default';
       }
 
