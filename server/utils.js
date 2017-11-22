@@ -95,10 +95,10 @@ export function createRoutes(files, srcDir) {
       if (key !== 'index' && i != 0) {
         name += '-' + key;
       }
-    
+
       if (!("name" in obj)) {
         obj.name = name;
-        obj.path = '/' + filePath[i];
+        obj.path = i === 0 ? '/' + filePath[i] : filePath[i];
         obj.component = 'default';
       }
 
