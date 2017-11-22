@@ -100,6 +100,7 @@ export function createRoutes(files, srcDir) {
       if (key !== 'index' && i != 0) {
         name += '-' + key;
       }
+
     }
     obj.component = r(srcDir, file);
     obj.chunkName = file.replace(/\.vue$/, '');
