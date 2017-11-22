@@ -2,20 +2,16 @@
  * @Author: insane.luojie
  * @Date:   2017-09-18 10:14:20
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-22 10:51:23
+ * @Last Modified time: 2017-11-22 11:10:28
  */
 /*eslint-disable*/
 
 import Vue from 'vue'
 import Router from 'vue-router'
-<% if(opts.plugins.route) { %>
-import beforeEachRoute from '<%= opts.plugins.route %>';
-<% } %>
-<% 
-  let _notFound = "";
+<% if(opts.plugins.route) { %>import beforeEachRoute from '<%= opts.plugins.route %>';<% } %>
+<% let _notFound = "";
   let tab = '\t\t';
-  if ( opts.views.notFound !== false) {
-%>
+  if ( opts.views.notFound !== false) { %>
 import notFound from '<%= opts.views.notFound %>';
 <%
     _notFound += '{\n'
@@ -30,7 +26,6 @@ Vue.use(Router)
 const DefaultRouteComponent = {
     template: "<router-view></router-view>"
 }
-
 <%
 function recursiveRoutes(routes, tab, components) {
   let res = ''
@@ -56,9 +51,7 @@ function recursiveRoutes(routes, tab, components) {
 const _components = []
 const _routes = recursiveRoutes(router.routes, '\t\t', _components)
 uniqBy(_components, '_name').forEach((route) => { %>
-const <%= route._name %> = () =>
-import ('<%= relativeToBuild(route.component) %>' /* webpackChunkName: "<%= wChunk(route.chunkName) %>" */ ).then(m => m.default || m)
-<% }) %>
+const <%= route._name %> = () => import ('<%= relativeToBuild(route.component) %>' /* webpackChunkName: "<%= wChunk(route.chunkName) %>" */ ).then(m => m.default || m) <% }) %>
 
 <% if (router.scrollBehavior) { %>
 const scrollBehavior = <%= serialize(router.scrollBehavior).replace('scrollBehavior(', 'function(').replace('function function', 'function') %>
@@ -85,7 +78,6 @@ const scrollBehavior = (to, from, savedPosition) => {
     }
 }
 <% } %>
-
 // 路由插件处理
 
 export function createRouter() {
@@ -100,7 +92,6 @@ export function createRouter() {
         <%= _notFound %>
         ]
     })
-
     <% if(opts.plugins.route) { %>
     if (beforeEachRoute.length == 3) {
         router.beforeEach(beforeEachRoute);
