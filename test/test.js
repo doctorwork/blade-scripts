@@ -20,14 +20,7 @@ function wp(p = "") {
  * @return {[type]} [description]
  */
 function r() {
-    let args = Array.prototype.slice.apply(arguments);
-    let lastArg = _.last(args);
-
-    if (lastArg.includes("@") || lastArg.includes("~")) {
-        return wp(lastArg);
-    }
-
-    return wp(resolve(...args.map(normalize)));
+   return '123';
 }
 
 const routes = [
@@ -72,17 +65,18 @@ function createRoutes(files, srcDir) {
       let key = filePath[i];
       obj = obj[key] || (obj[key] = Object.create(null));
 
+      if (key !== 'index' && i != 0) {
+        name += '-' + key;
+      }
+
       if (!("name" in obj)) {
         obj.name = name;
         obj.path = '/' + filePath[i];
         obj.component = 'default';
       }
 
-      if (key !== 'index' && i != 0) {
-        name += '-' + key;
-      }
     }
-    // obj.component = r(srcDir, file);
+    obj.component = r(srcDir, file);
     obj.chunkName = file.replace(/\.vue$/, '');
   });
 
