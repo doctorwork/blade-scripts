@@ -52,9 +52,9 @@ describe("create routes", () => {
 			for(let item of items) {
 				if(!!item.children) {
 					for(let childItem of item.children) {
-						if(childItem.chunkName.indexOf('index')>-1) {
-							if(childItem.path !== '' || 'name' in item || ~childItem.name.indexOf('index')) {
+						if(childItem.chunkName.split('/').indexOf('index')>-1) {
 
+							if(childItem.path !== '' || 'name' in item || ~childItem.name.indexOf('index')) {
 								return false;
 							}
 						}	

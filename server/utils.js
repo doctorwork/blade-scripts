@@ -128,7 +128,7 @@ function changeDicToAry(router) {
       if (children.length > 0) {
         for (let childrenItem of children) {
 
-          if (childrenItem.path === '/index') {
+          if (childrenItem.path === 'index') {
             childrenItem.path = '';
             delete item.name;
           }
