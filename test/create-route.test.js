@@ -1,5 +1,5 @@
-import { createRoutes } from "../server/utils";
-
+// import { createRoutes } from "../server/utils";
+let { createRoutes } = require('../server/utils');
 describe("create routes", () => {
 	// Now mount the component, and you have the wrapper.
 	const routes = [
@@ -25,53 +25,71 @@ describe("create routes", () => {
 
 	let dir = "/";
 	let results = createRoutes(routes, dir);
-	let exclude = {
-		chunkName: "pages/clinic/log/diagnosis",
-		component: "/pages/clinic/log/diagnosis.vue",
-		name: "clinic-log-diagnosis",
-		path: "/clinic/log/diagnosis"
-	};
 
-	it("should routes be nested", () => {
-		expect(results).not.toEqual(expect.arrayContaining([exclude]));
-	});
+	function filterRouter(router, exeFunc, isRoot) {
+		for (let item of router) {
 
-	it("page/index 对应的path 应该为/", () => {
-		
-		for(let item of results) {
-			if(item.name === 'index') {
-				expect(item.path).toEqual('/')
-				break;
+
+			isRoot && exeFunc(item)
+
+
+			if (!!item.children) {
+				for (let childItem of item.children) {
+					exeFunc(item, childItem, false);
+				}
+
+				filterRouter(item.children, exeFunc);
 			}
 		}
-	});
+		return function(){}
+	}
 
-	it("除开第一级目录外，其他目录中的index对应的path应该为空字符串,name应该不包含index，且父data的name需要删除", () => {
-		function check(items) {
-			
-			for(let item of items) {
-				if(!!item.children) {
-					for(let childItem of item.children) {
-						if(childItem.chunkName.split('/').indexOf('index')>-1) {
+	it(`检测path：第一级的path应该为/{name}的形式，第一级的index对应的path应该是/, 
+			其他子目录的path应该为{name},不包含/,如果name为index，那么对应的path应该为空字符串`, () => {
+			function check(item, childItem) {
+				if (arguments.length === 0) {
+					return true;
+				}
 
-							if(childItem.path !== '' || 'name' in item || ~childItem.name.indexOf('index')) {
-								return false;
-							}
-						}	
+				if (arguments.length < 2) {
+				
+					if (item.path.indexOf('/') === -1) {
+						throw new Error('第一级的path应该为/{name}的形式,而给的path=' + item.path);
 					}
-					if(!check(item.children)) {
-							return false;
+					
+					if (item.name === 'index' && item.path !== '/') {
+						throw new Error('第一级的index对应的path应该是空字符串, 而给的path=' + item.path);
+					}
+				}
+				else {
+					//其他子目录的path应该为{name},不包含/
+					if (childItem.path.indexOf('/') > -1) {
+							throw new Error('其他子目录的path应该为{name},不包含/,而给的path=' + item.path);
+					}
+					//如果name为index，那么对应的path应该为空字符串
+					if (childItem.chunkName.split('/').pop() === 'index' && childItem.path !== '') {
+						throw new Error('如果name为index，那么对应的path应该为空字符串,而给的path=' + item.path);
 					}
 				}
 			}
-			return true;
+
+			expect(filterRouter(results, check, true)).not.toThrow(Error)
+		});
+
+	it("检测name：如果子目录包含index，那么需要删除name属性", () => {
+		function check(item, childItem) {
+			if (arguments.length >= 2) {
+				if (childItem.chunkName.split('/').pop() === 'index'
+					&& 'name' in item
+				) {
+
+					throw new Error('如果子目录包含index，那么需要删除name属性');
+				}
+			}
+			return function(){};
 		}
 
-		expect(check(results)).toBeTruthy()
+		expect(filterRouter(results, check, true)).not.toThrow(Error)
 	});
 
-	it("noly 9 roues", () => {
-		// 9 个 总路由
-		expect(Object.keys(results).length).toEqual(9);
-	});
 });

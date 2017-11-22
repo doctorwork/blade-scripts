@@ -91,7 +91,6 @@ export function createRoutes(files, srcDir) {
       let key = filePath[i];
       obj = obj[key] || (obj[key] = Object.create(null));
 
-
       if (key !== 'index' && i != 0) {
         name += '-' + key;
       }
