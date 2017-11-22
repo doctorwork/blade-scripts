@@ -20,7 +20,7 @@ const requestInterceptor = instance.interceptors.request.use(config => {
 /**
  * 默认响应拦截
  * @param  {object} response 响应内容
- * @return {}          
+ * @return {}
  */
 const responseInterceptor = instance.interceptors.response.use(response => {
 	switch (response.status) {
@@ -42,7 +42,7 @@ const responseInterceptor = instance.interceptors.response.use(response => {
  * @param  {string} method 请求方法
  * @param  {string} url    请求地址
  * @param  {object} params  请求参数
- * @return {object}      
+ * @return {object}
  */
 function request(method, url, params = {}) {
 	const conf = Object.assign(
@@ -101,7 +101,7 @@ export function setup(opts) {
 /**
  * 创建单独的请求对象
  * @param  {object} options 配置对象
- * @return {object}         
+ * @return {object}
  */
 export function createApi(options) {
 	return axios.create(options);
@@ -136,7 +136,7 @@ export const [makeGet, makePost, makePut, makeDelete] = [
 });
 
 // 创建resource 请求
-export function makeResource(url, actions, opts) {
+export function makeResource(url, actions, makers) {
 	var schemas = actions || {
 		get: { method: "GET", url: url + "/{id}" },
 		query: { method: "GET", url },
@@ -145,7 +145,12 @@ export function makeResource(url, actions, opts) {
 		delete: { method: "DELETE", url: url + "/{id}" }
 	};
 
-	const _makers = { makeGet, makePost, makePut, makeDelete };
+	const _makers = makers || {
+		GET: makeGet,
+		POST: makePost,
+		PUT: makePut,
+		DELETE: makeDelete
+	};
 
 	function initial(str) {
 		return str.toLowerCase().replace(/^(\w)/, m => {
@@ -154,7 +159,7 @@ export function makeResource(url, actions, opts) {
 	}
 
 	return mapValues(schemas, item => {
-		return _makers["make" + initial(item.method)](item.url);
+		return _makers[item.method](item.url);
 	});
 }
 

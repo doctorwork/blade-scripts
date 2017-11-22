@@ -1,15 +1,11 @@
 image: node:8
 
-# deploy:
-#   stage: deploy
-#   script: "scp -r ./docs www@dev-server:/home/www/wikis/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
-#   environment:
-#     name: development
-
-Test SSH:
+make doc:
   script:
 
   # try to clone yourself, the SSH_PRIVATE_KEY was added as deploy key to this repository
-  - ssh www@localhost "mkdir -p /home/www/docs/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
-  - scp -r ./docs/* www@localhost:/home/www/docs/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}/
-
+  - > 
+    if git diff HEAD~ --name-only|grep docs; then
+        ssh www@localhost "mkdir -p /home/www/docs/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
+        scp -r ./docs/* www@localhost:/home/www/docs/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}/
+    fi;
