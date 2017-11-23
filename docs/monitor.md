@@ -35,3 +35,7 @@ npm run <blade source> -- --action=delete
 ```shell
 npm run <blade source> -- --action=uploade 
 ```
+### 备注：
+```
+1. <blade source>   项目中在package.json 中自己设置的指令名称，例如："sentry" : "blade source"
+```
