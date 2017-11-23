@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-22 16:26:53
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-07 21:16:12
+ * @Last Modified time: 2017-11-23 14:32:09
  */
 /*eslint-disable*/
 
@@ -21,8 +21,18 @@ export default {
         <% } %>
 
         // 设置 打点 raven-js
-        <% if (opts.addons.sentry) { %>
-
+        <% if(opts.addons.sentry) {%>
+            if(process.env.NODE_ENV !== 'development' ){
+                Raven
+                .config('<%= opts.addons.sentry.dns %>',{
+                    release : '<%= opts.version %>'
+                })
+                .addPlugin(RavenVue, Vue)
+                .setTagsContext({
+                    environment : process.env.NODE_ENV
+                })
+                .install();
+            }
         <% } %>
     }
 }

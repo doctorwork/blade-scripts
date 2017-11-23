@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-18 10:14:36
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-15 11:47:50
+ * @Last Modified time: 2017-11-23 14:32:37
  */
 
 /*eslint-disable*/
@@ -17,7 +17,6 @@ import InstallComponents from "./components";
 <% opts.css.forEach(item => { %>import "<%= item %>";<% }) %>
 <% if (opts.type == 'mobile') { %>// 设置 rem
 document.documentElement.style.fontSize = '20px';<% } %>
-
 // 插件注入
 Vue.use(InstallComponents);
 Vue.use(installPlugins);
