@@ -28,7 +28,7 @@ document.documentElement.style.fontSize = '20px';<% } %>
         })
         .addPlugin(RavenVue, Vue)
         .setTagsContext({
-            environment : 'development'
+            environment : 'production'
         })
         .install();
     }
