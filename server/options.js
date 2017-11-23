@@ -8,8 +8,10 @@ import { join, resolve, sep } from "path";
 import { existsSync } from "fs";
 import _ from "lodash";
 import { isUrl, isPureObject, relativeTo } from "./utils";
+const pkg = require(resolve('package.json'));
 
 const _default = {
+    version : pkg.version,
 	mode: "spa",
 	host: "127.0.0.1",
 	port: 8080,

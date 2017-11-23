@@ -14,7 +14,7 @@ const spawn = require('cross-spawn');
 const script = process.argv[2];
 const args = process.argv.slice(3);
 const existsSync = require("fs").existsSync;
-const { printAndExit } = require("./utils");
+const printAndExit = require("./utils");
 
 const {resolve, join} = path;
 
@@ -34,6 +34,7 @@ if (!existsSync(join(dir, 'pages'))) {
 
 switch (script) {
     case 'build':
+    case 'source':
     case 'dev':
         {
             const result = spawn.sync(
