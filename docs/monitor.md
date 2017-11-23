@@ -1,6 +1,6 @@
 # 监控
 
-## sentry 配置
+## sentry 配置(web.config.js)
 
 ```js
 // 扩展
