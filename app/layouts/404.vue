@@ -1,19 +1,21 @@
 <template>
-	<div class="nofound">
-		404
-	</div>
+    <div class="notfound">404</div>
 </template>
 
 <script >
-	export default {
-	  created() {}
-	};
+    export default {
+    	created() {}
+    };
 </script>
 <style lang="less" scoped>
-	.notfound {
-	  height: 100%;
-	  text-align: center;
-	  font-size: 20px;
-	  letter-spacing: 10px;
-	}
+    .nofound {
+    	height: 100%;
+    	text-align: center;
+    	display: flex;
+    	align-items: center;
+    	justify-content: center;
+    	font-size: 60px;
+    	color: #999;
+    	font-weight: 100;
+    }
 </style>
