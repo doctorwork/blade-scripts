@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-28 10:49:32
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-15 11:17:32
+ * @Last Modified time: 2017-11-23 15:32:22
  */
 import _ from "lodash";
 import chokidar from "chokidar";
@@ -50,9 +50,9 @@ export default class Render {
 	}
 
 	/**
-     * 获取第三方vendor
-     * @return {array} 
-     */
+	 * 获取第三方vendor
+	 * @return {array}
+	 */
 	vendors() {
 		return _.union(
 			["vue", "vue-router", "vuex", "axios"],
@@ -61,9 +61,9 @@ export default class Render {
 	}
 
 	/**
-     * 创建路由，插件，组件文件
-     * @return {[type]} [description]
-     */
+	 * 创建路由，插件，组件文件
+	 * @return {[type]} [description]
+	 */
 	async collectFiles() {
 		// 初始化配置文件
 		await remove(r(this.options.buildDir));
@@ -122,9 +122,9 @@ export default class Render {
 	}
 
 	/**
-     * 初始化服务器
-     * @return {[type]} [description]
-     */
+	 * 初始化服务器
+	 * @return {[type]} [description]
+	 */
 	async makeServer(restart) {
 		await this.makeDll();
 
@@ -161,9 +161,9 @@ export default class Render {
 	}
 
 	/**
-     * 构建 production 文件 
-     * @return {[type]} [description]
-     */
+	 * 构建 production 文件
+	 * @return {[type]} [description]
+	 */
 	async build() {
 		await this.collectFiles();
 
@@ -181,10 +181,10 @@ export default class Render {
 	}
 
 	/**
-     * 开启开发服务
-     * @param  {boolean} restart 是否重启
-     * @return {[type]}         [description]
-     */
+	 * 开启开发服务
+	 * @param  {boolean} restart 是否重启
+	 * @return {[type]}         [description]
+	 */
 	async start(restart) {
 		await this.collectFiles();
 		// 初始化 dev server ? express

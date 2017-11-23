@@ -1,0 +1,3 @@
+beforeAll(() => {
+	// start blade server
+});
