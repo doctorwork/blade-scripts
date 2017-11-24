@@ -30,14 +30,6 @@ params: {
 ### header - ( 导航栏 )
 
 * params.title 必传，但可以为空字符串
-
-```js
-// string 直接显示标题
-// object
-{
-}
-```
-
 * params.show 是否显示 默认为 true
 * params.left/params.right 左右按钮
 
