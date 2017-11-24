@@ -8,7 +8,7 @@
     };
 </script>
 <style lang="less" scoped>
-    .nofound {
+    .notfound {
     	height: 100%;
     	text-align: center;
     	display: flex;

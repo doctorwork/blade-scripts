@@ -61,20 +61,9 @@ function request(method, url, params = {}) {
 		conf.data = params;
 	}
 
-	return new Promise((resolve, reject) => {
-		return instance(conf)
-			.then(response => {
-				resolve(response);
-			})
-			.catch(err => {
-				resolve(
-					err.response
-						? err.response.data
-						: {
-								errmsg: err.message
-							}
-				);
-			});
+	return Promise.resolve(instance(conf)).catch(err => {
+		let res = err.response ? err.response.data : { errmsg: err.message };
+		return res; // reject at next version
 	});
 }
 

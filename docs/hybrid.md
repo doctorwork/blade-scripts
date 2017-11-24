@@ -8,9 +8,9 @@
 * params.url 必传
 * params.title 导航栏标题
 
-```
+```js
     params: {
-        type: "h5",
+        type: "h5",         // native时 url 为页面名称字符串
         url: "/h5",
         title: "首页"，
         animation: false   // 默认为 true, 有动画 ， 可以不传
@@ -21,25 +21,35 @@
 
 * params.step 返回步数
 
-```
-    params: {
-        step: -1  // 默认为 1, -1表示最顶层
-    }
+```js
+params: {
+	step: -1; // 默认为 1, -1表示native navigation 最顶层
+}
 ```
 
 ### header - ( 导航栏 )
 
 * params.title 必传，但可以为空字符串
+
+```js
+// string 直接显示标题
+// object
+{
+}
+```
+
 * params.show 是否显示 默认为 true
 * params.left/params.right 左右按钮
 
-```
+```js
+    // icon : back/add/remove/search/detail/share
+
     params: {
         title: "首页",
         show: true/false,
         background: "#fff",   // transparent
-        left: [],
-        right: []
+        left: [{title: "返回", callback: 'callback_name_1', icon: "back"}],
+        right: [{title: "确定", callback: 'callback_name_2', color: "red", icon: ""}]
     }
 ```
 
@@ -69,7 +79,7 @@
 
 返回数据
 
-```
+```js
     {
         version: "",                // 容器版本
         cache: {                    // 各频道缓存版本
