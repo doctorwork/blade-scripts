@@ -22,7 +22,7 @@ params: {
         type: "h5",         // native时 url 为页面名称字符串
         url: "/h5",
         title: "首页"，
-        animation: false   // 默认为 true, 有动画 ， 可以不传
+        animate: false   // 默认为 true, 有动画 ， 可以不传
     }
 ```
 
@@ -59,7 +59,7 @@ params: {
 * params.enable 是否允许滚动， 默认为 true, 允许
 * params.background 背景颜色
 
-```js
+```json
     params: {
         enable: true,
         background: "#eee"
@@ -70,9 +70,9 @@ params: {
 
 在页面执行了 push 后，再次返回当前页面时执行
 
-```js
+```json
 {
-	callback: "callback_name";
+	callback: "callback_name"
 }
 ```
 
@@ -80,9 +80,9 @@ params: {
 
 在页面执行了 push 后执行
 
-```js
+```json
 {
-	callback: "callback_name";
+	callback: "callback_name"
 }
 ```
 
@@ -90,17 +90,26 @@ params: {
 
 返回数据
 
-```js
-    {
-        version: "",                // 容器版本
-        cache: {                    // 各频道缓存版本
-            health: "1.9.0",
-            urine: "1.2.0"
-        },
-        os: "ios/10.1",             // 系统类型/版本
-        dist: "app store",          // 下载渠道
-        uuid: ""                    // 设备 uuid
-    }
+```json
+//js
+{
+	callback: "device_callback"
+}
+```
+
+```json
+// 返回数据
+{
+	version: "", // 容器版本
+	cache: {
+		// 各频道缓存版本
+		health: "1.9.0",
+		urine: "1.2.0"
+	},
+	os: "ios/10.1", // 系统类型/版本
+	dist: "app store", // 下载渠道
+	uuid: "" // 设备 uuid
+}
 ```
 
 ### location - ( 定位 )
@@ -117,12 +126,23 @@ params: {
 }
 ```
 
+```json
+{
+	coordate: { lat: 1001.1, long: 1222.0 },
+	locale: "四川省成都市" // 可用时返回
+}
+```
+
 ### clipboard - ( 剪贴板 )
 
-```js
+```json
 {
 	params: {
-		content: "复制内容";
+		content: "复制内容"
 	}
 }
+```
+
+```
+
 ```

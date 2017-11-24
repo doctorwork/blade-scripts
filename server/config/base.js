@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-18 18:36:03
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-22 12:45:01
+ * @Last Modified time: 2017-11-24 11:45:34
  */
 
 import { resolve, join } from "path";
@@ -16,7 +16,7 @@ import ExtractTextPlugin from "extract-text-webpack-plugin";
 import { createLoaders } from "./loader";
 import UglifyJsPlugin from "uglifyjs-webpack-plugin";
 import { error, isObject } from "util";
-import _ from "lodash";
+import forEach from "lodash/forEach";
 
 export default function baseConfig() {
 	let plugins = [
@@ -49,7 +49,7 @@ export default function baseConfig() {
 	);
 
 	const envs = {};
-	_.forEach(envVars, (val, key) => {
+	forEach(envVars, (val, key) => {
 		envs[key] = JSON.stringify(val);
 	});
 
@@ -128,9 +128,13 @@ export default function baseConfig() {
 			modules: ["node_modules", nodeModulesDir]
 		},
 		devtool: this.options.dev
-			? "cheap-eval-source-map"
+			? "#module-eval-source-map"
 			: "hidden-source-map"
 	};
+
+	if (this.options.dev && this.options.devtool) {
+		webpackConfig.devtool = this.options.devtool;
+	}
 
 	if (this.options.dev) {
 		webpackConfig.plugins.push(

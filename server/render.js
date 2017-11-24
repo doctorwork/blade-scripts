@@ -2,9 +2,9 @@
  * @Author: insane.luojie
  * @Date:   2017-09-28 10:49:32
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-23 15:32:22
+ * @Last Modified time: 2017-11-24 10:27:00
  */
-import _ from "lodash";
+import union from "lodash/union";
 import chokidar from "chokidar";
 import webpack from "webpack";
 import debug from "debug";
@@ -54,7 +54,7 @@ export default class Render {
 	 * @return {array}
 	 */
 	vendors() {
-		return _.union(
+		return union(
 			["vue", "vue-router", "vuex", "axios"],
 			this.options.vendors
 		);
