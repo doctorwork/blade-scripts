@@ -2,6 +2,15 @@
 
 ## 协议
 
+### init - ( 初始化 )
+
+```js
+params: {
+	cache: true; // 离线缓存，默认开启
+	callback_name: "window.hybrid_callbacks"; // 回调名称
+}
+```
+
 ### forward - (push 页面 )
 
 * params.type 默认 h5， 可以不传
@@ -67,6 +76,16 @@ params: {
 }
 ```
 
+### pagehide - ( 页面进入后台，被 push 遮盖 )
+
+在页面执行了 push 后执行
+
+```js
+{
+	callback: "callback_name";
+}
+```
+
 ### device - ( 获取设备信息 )
 
 返回数据
@@ -82,4 +101,28 @@ params: {
         dist: "app store",          // 下载渠道
         uuid: ""                    // 设备 uuid
     }
+```
+
+### location - ( 定位 )
+
+```js
+{
+	params: {
+		located: "located_callback"; // 定位成功 回调
+		failed: "failed_callback"; // 失败回调 失败类型 code : 1 - 定位失败 2 - 无权限
+		updated: "updated_callback"; //位置更新回调,
+		precision: "normal"; // 精度 - normal 普通, high 最高
+		timeout: 5000; // 默认超时 5秒，超时后执行 failed 回调
+	}
+}
+```
+
+### clipboard - ( 剪贴板 )
+
+```js
+{
+	params: {
+		content: "复制内容";
+	}
+}
 ```
