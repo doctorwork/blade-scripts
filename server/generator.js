@@ -4,7 +4,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-20 15:05:33
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-23 15:56:17
+ * @Last Modified time: 2017-11-26 22:39:51
  */
 
 import _ from "lodash";
@@ -47,7 +47,7 @@ async function getModules(opts) {
 		let name = RegExp.$1;
 		return {
 			name,
-			varName: name.replace("-", "_"),
+			varName: name.replace(/-/g, "_"),
 			path: item
 		};
 	});
@@ -63,7 +63,7 @@ async function getComponents(opts) {
 		let name = RegExp.$1;
 		return {
 			name,
-			varName: name.replace("-", "_"),
+			varName: name.replace(/-/g, "_"),
 			path: item
 		};
 	});

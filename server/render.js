@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-28 10:49:32
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-24 10:27:00
+ * @Last Modified time: 2017-11-26 23:09:38
  */
 import union from "lodash/union";
 import chokidar from "chokidar";
@@ -173,7 +173,8 @@ export default class Render {
 
 	restart() {
 		this.options = Options.create(this._opts);
-		console.log("> restarting");
+		console.log("> 重启...");
+		console.log("> ");
 		// 停止compiler
 		this.server.close(() => {
 			this.start(true);

@@ -36,6 +36,24 @@ params: {
 }
 ```
 
+### modal - (modal 页面 )
+
+* params.type 默认 h5， 可以不传
+* params.url 必传
+* params.title 导航栏标题
+* params.anmite 动画放下
+* params.size modal 窗口尺寸
+
+```js
+    params: {
+        type: "h5",         // native时 url 为页面名称字符串
+        url: "/h5",
+        title: "首页"，
+        animate: 'down',   // 无： none, up:从上往下 left: 从左往右 right: 从右往左, 默认为down
+        size: 50%,          // 默认 100%
+    }
+```
+
 ### header - ( 导航栏 )
 
 * params.title 必传，但可以为空字符串

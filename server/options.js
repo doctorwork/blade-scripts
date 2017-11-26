@@ -2,16 +2,16 @@
  * @Author: insane.luojie
  * @Date:   2017-09-20 11:52:45
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-22 12:16:15
+ * @Last Modified time: 2017-11-26 23:24:08
  */
 import { join, resolve, sep } from "path";
 import { existsSync } from "fs";
 import _ from "lodash";
 import { isUrl, isPureObject, relativeTo } from "./utils";
-const pkg = require(resolve('package.json'));
+const pkg = require(resolve("package.json"));
 
 const _default = {
-    version : pkg.version,
+	version: pkg.version,
 	mode: "spa",
 	host: "127.0.0.1",
 	port: 8080,
