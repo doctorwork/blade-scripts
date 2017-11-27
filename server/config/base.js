@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-18 18:36:03
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-24 11:45:34
+ * @Last Modified time: 2017-11-27 16:58:56
  */
 
 import { resolve, join } from "path";
@@ -56,6 +56,9 @@ export default function baseConfig() {
 	plugins = plugins.concat([
 		new HTMLPlugin(HTMLPluginConfig),
 		new webpack.DefinePlugin(envs),
+		new webpack.NamedModulesPlugin(),
+		new webpack.NamedChunksPlugin(),
+		// new webpack.HashedModuleIdsPlugin(),
 		new ExtractTextPlugin({
 			filename: "css/style.[chunkhash:8].css" // this.options.build.filenames.css
 		})
@@ -89,6 +92,10 @@ export default function baseConfig() {
 					);
 				},
 				minChunks: Infinity
+			}),
+			new webpack.optimize.CommonsChunkPlugin({
+				name: ["runtime"],
+				filename: "rumtime.[hash:8].js"
 			})
 		);
 	}
@@ -99,7 +106,7 @@ export default function baseConfig() {
 		entry,
 		output: {
 			path: resolve(this.options.buildDir, "dist"),
-			filename: "[name].[hash:8].js",
+			filename: "[name].[chunkhash:8].js",
 			chunkFilename: "[name].[chunkhash:8].js",
 			publicPath: isUrl(this.options.build.publicPath)
 				? this.options.build.publicPath
@@ -139,7 +146,6 @@ export default function baseConfig() {
 	if (this.options.dev) {
 		webpackConfig.plugins.push(
 			new webpack.HotModuleReplacementPlugin(),
-			new webpack.NamedModulesPlugin(),
 			new FriendlyErrorsWebpackPlugin({
 				compilationSuccessInfo: {
 					messages: [

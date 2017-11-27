@@ -41,7 +41,7 @@ params: {
 * params.type 默认 h5， 可以不传
 * params.url 必传
 * params.title 导航栏标题
-* params.anmite 动画放下
+* params.animate 动画放下
 * params.size modal 窗口尺寸
 
 ```js

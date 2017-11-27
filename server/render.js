@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-28 10:49:32
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-26 23:09:38
+ * @Last Modified time: 2017-11-27 17:13:03
  */
 import union from "lodash/union";
 import chokidar from "chokidar";
@@ -89,15 +89,26 @@ export default class Render {
 		this.configs = configs;
 
 		if (build) {
-			return webpack(
-				Object.keys(this.configs).map(item => {
-					return this.configs[item];
-				}),
-				(err, stats) => {
-					if (err) throw err;
-					process.stdout.write(stats.toString(miniStats) + "\n\n");
-				}
-			);
+			return new Promise((resolve, reject) => {
+				webpack(
+					Object.keys(this.configs).map(item => {
+						return this.configs[item];
+					}),
+					(err, stats) => {
+						if (err) throw err;
+						process.stdout.write(
+							stats.toString(miniStats) + "\n\n"
+						);
+						resolve({
+							dir: this.options.buildDir,
+							data: stats.toJson({
+								assets: true,
+								hash: true
+							})
+						});
+					}
+				);
+			});
 		}
 	}
 
@@ -168,7 +179,7 @@ export default class Render {
 		await this.collectFiles();
 
 		await this.makeDll(true);
-		this.makeConfig(true);
+		return this.makeConfig(true);
 	}
 
 	restart() {
