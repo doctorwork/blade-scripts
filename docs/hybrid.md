@@ -146,7 +146,7 @@ params: {
 
 ```json
 {
-	coordate: { lat: 1001.1, long: 1222.0 },
+	coordinate: { lat: 1001.1, long: 1222.0 },
 	locale: "四川省成都市" // 可用时返回
 }
 ```
@@ -161,6 +161,17 @@ params: {
 }
 ```
 
-```
+### upload - ( 上传 )
 
+选择上传后，地址以数组形式返回 ["http://www.example.com/image.png"]
+
+```json
+{
+	params: {
+		type: "image", // 默认 image， 可选 video
+		mime: "image/png", // 默认不限制
+		size: "1" // 默认不限制, 单位 mb, 建议识别 1m, 1k 等缩写
+	},
+	callback: function(urls) {}
+}
 ```
