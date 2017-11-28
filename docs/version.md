@@ -2,10 +2,13 @@
 
 ## 计划
 
-1. 按 pages 内目录和一级文件合并 chunk
-2. ~~vendor bundle 优化~~
+1. ~~vendor bundle 优化~~
 
 ## 更新
+
+> 1.2.8 (2017-11-28)
+
+1. 按 pages 内目录和一级文件合并 chunk
 
 > 1.2.7
 
