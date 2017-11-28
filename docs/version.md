@@ -2,7 +2,8 @@
 
 ## 计划
 
-* vendor bundle 优化
+1. 按 pages 内目录和一级文件合并 chunk
+2. ~~vendor bundle 优化~~
 
 ## 更新
 
