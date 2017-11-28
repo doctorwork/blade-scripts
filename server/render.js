@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-28 10:49:32
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-27 17:13:03
+ * @Last Modified time: 2017-11-28 16:47:11
  */
 import union from "lodash/union";
 import chokidar from "chokidar";
@@ -23,6 +23,7 @@ import vueLoaderConfig from "./config/vue-loader.config";
 import styleLoader from "./config/style-loader";
 
 import Generator from "./generator";
+import { join } from "path";
 
 const miniStats = {
 	modules: false,
@@ -147,6 +148,10 @@ export default class Render {
 			port: this.options.port,
 			host: this.options.host,
 			open: true,
+			contentBase: join(
+				this.options.srcDir,
+				this.options.build.contentBase
+			),
 			openPage: this.options.router.base,
 			stats: "errors-only",
 			historyApiFallback:
@@ -185,7 +190,7 @@ export default class Render {
 	restart() {
 		this.options = Options.create(this._opts);
 		console.log("> 重启...");
-		console.log("> ");
+		console.log(" ");
 		// 停止compiler
 		this.server.close(() => {
 			this.start(true);

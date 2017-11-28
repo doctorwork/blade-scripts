@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-18 18:36:03
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-27 16:58:56
+ * @Last Modified time: 2017-11-28 13:50:19
  */
 
 import { resolve, join } from "path";
@@ -17,6 +17,7 @@ import { createLoaders } from "./loader";
 import UglifyJsPlugin from "uglifyjs-webpack-plugin";
 import { error, isObject } from "util";
 import forEach from "lodash/forEach";
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 export default function baseConfig() {
 	let plugins = [
@@ -60,7 +61,7 @@ export default function baseConfig() {
 		new webpack.NamedChunksPlugin(),
 		// new webpack.HashedModuleIdsPlugin(),
 		new ExtractTextPlugin({
-			filename: "css/style.[chunkhash:8].css" // this.options.build.filenames.css
+			filename: "css/style.[contenthash:8].css" // this.options.build.filenames.css
 		})
 	]);
 
@@ -95,11 +96,21 @@ export default function baseConfig() {
 			}),
 			new webpack.optimize.CommonsChunkPlugin({
 				name: ["runtime"],
-				filename: "rumtime.[hash:8].js"
-			})
+				filename: this.options.dev
+					? "rumtime.[hash:8].js"
+					: "rumtime.[chunkhash:8].js"
+			}),
+			new CopyWebpackPlugin([
+				{
+					from: resolve(
+						this.options.srcDir,
+						this.options.build.contentBase
+					),
+					to: resolve(this.options.buildDir, "dist")
+				}
+			])
 		);
 	}
-
 	const rules = createLoaders.call(this);
 
 	let webpackConfig = {

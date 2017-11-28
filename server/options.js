@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-20 11:52:45
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-26 23:24:08
+ * @Last Modified time: 2017-11-28 13:38:44
  */
 import { join, resolve, sep } from "path";
 import { existsSync } from "fs";
@@ -26,7 +26,10 @@ const _default = {
 		extractCSS: true,
 		dll: false,
 		pretty: false,
-		postcss: {}
+		postcss: {},
+		contentBase: "public",
+		// babel loader include
+		babelInclude: []
 	},
 	appTemplatePath: "",
 	layout: {

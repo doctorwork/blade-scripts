@@ -175,3 +175,27 @@ params: {
 	callback: function(urls) {}
 }
 ```
+
+## 离线缓存
+
+离线缓存根据 每个项目的 manifest.json 文件进行更新下载
+
+```json
+{
+	"hash": "aa746c0bcc0d4397be72",
+	"base": "/app/",
+	"assets": [
+		"imgs/86c9786.png",
+		"pages/about.da8fe643.js",
+		"pages/article.0ae31007.js",
+		"pages/feedback.08fd5ea4.js",
+		"pages/index.77f25bbf.js",
+		"pages/messages.9d0f2929.js",
+		"pages/uc.07621e90.js",
+		"rumtime.aa746c0b.js",
+		"vendor.74f0edb2.js",
+		"css/style.4a108660.css",
+		"main.4a108660.js"
+	]
+}
+```

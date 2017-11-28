@@ -6,6 +6,20 @@
 
 ## 更新
 
+> 1.2.7
+
+1. 添加 public 目录
+2. 修改 manifest.json 内容
+3. 添加 build.babelInclude 选项
+
+> 1.2.6
+
+1. 拆分 webpack runtime， 优化缓存
+
+> 1.2.5
+
+1. 修复 bug
+
 > 1.2.4 (2017-11-22)
 
 1. 添加 resource maker 参数，实现公用
