@@ -12,7 +12,7 @@
 		"prepare": "npm run release",
 		"test": "jest .",
 		"version":
-			"conventional-changelog -p angular -i docs/CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
+			"conventional-changelog -p angular -i docs/CHANGELOG.md -s -r 0 && git add docs/CHANGELOG.md"
 	},
 	"files": ["dist", "index.js"],
 	"author": "luojie",
