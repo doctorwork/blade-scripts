@@ -1,3 +1,8 @@
+<a name="1.2.9"></a>
+## [1.2.9](https://59.151.4.126/insane/blade-scripts/compare/1.2.8...1.2.9) (2017-12-01)
+
+
+
 <a name="1.2.8"></a>
 ## [1.2.8](https://59.151.4.126/insane/blade-scripts/compare/1.2.7...1.2.8) (2017-11-28)
 
