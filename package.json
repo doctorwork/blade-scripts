@@ -1,6 +1,6 @@
 {
 	"name": "blade-scripts",
-	"version": "1.2.8",
+	"version": "1.2.7",
 	"description": "",
 	"main": "./dist/index.js",
 	"bin": {
@@ -10,7 +10,9 @@
 		"build": "taskr",
 		"release": "taskr release",
 		"prepare": "npm run release",
-		"test": "jest ."
+		"test": "jest .",
+		"version":
+			"conventional-changelog -p angular -i docs/CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
 	},
 	"files": ["dist", "index.js"],
 	"author": "luojie",
