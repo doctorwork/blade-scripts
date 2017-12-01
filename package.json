@@ -11,12 +11,10 @@
 		"release": "taskr release",
 		"prepare": "npm run release",
 		"test": "jest .",
-		"version": "conventional-changelog -p angular -i docs/CHANGELOG.md -s -r 0 && git add docs/CHANGELOG.md"
+		"version":
+			"conventional-changelog -p angular -i docs/CHANGELOG.md -s -r 0 && git add docs/CHANGELOG.md"
 	},
-	"files": [
-		"dist",
-		"index.js"
-	],
+	"files": ["dist", "index.js"],
 	"author": "luojie",
 	"license": "ISC",
 	"dependencies": {
@@ -76,25 +74,16 @@
 		"@taskr/esnext": "^1.1.0",
 		"@taskr/watch": "^1.1.0",
 		"babel-jest": "^21.2.0",
-		"babel-plugin-transform-runtime": "^6.23.0",
-		"babel-preset-env": "^1.6.0",
 		"jest": "^21.2.1",
 		"taskr": "^1.1.0"
 	},
 	"jest": {
-		"moduleFileExtensions": [
-			"js",
-			"json",
-			"vue",
-			"less"
-		],
+		"moduleFileExtensions": ["js", "json", "vue", "less"],
 		"moduleNameMapper": {
 			"^~(.*)$": "<rootDir>/$1",
 			"^vue$": "vue/dist/vue.common.js"
 		},
-		"moduleDirectories": [
-			"node_modules"
-		],
+		"moduleDirectories": ["node_modules"],
 		"transform": {
 			"^.+\\.js$": "<rootDir>/node_modules/babel-jest"
 		}

@@ -22,6 +22,9 @@ params: {
         type: "h5",         // native时 url 为页面名称字符串
         url: "/h5",
         title: "首页"，
+        bigTitle: false,
+        color: "666666",
+        background: "ffffff",
         animate: false   // 默认为 true, 有动画 ， 可以不传
     }
 ```
@@ -66,6 +69,8 @@ params: {
     params: {
         title: "首页",
         show: true/false,
+        bigTitle: false,
+        color: "666666",
         background: "#fff",   // transparent
         left: [{title: "返回", callback: 'callback_name_1', icon: "back"}],
         right: [{title: "确定", callback: 'callback_name_2', color: "red", icon: ""}]
