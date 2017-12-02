@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-18 10:14:20
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-22 11:10:28
+ * @Last Modified time: 2017-12-02 16:43:19
  */
 /*eslint-disable*/
 
@@ -80,7 +80,7 @@ const scrollBehavior = (to, from, savedPosition) => {
 <% } %>
 // 路由插件处理
 
-export function createRouter() {
+function createRouter() {
     const router = new Router({
         mode: '<%= router.mode %>',
         base: '<%= router.base %>',
@@ -101,3 +101,5 @@ export function createRouter() {
     <% } %>
     return router;
 }
+
+export default createRouter();

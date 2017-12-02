@@ -2,13 +2,13 @@
  * @Author: insane.luojie
  * @Date:   2017-09-18 10:14:36
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-23 14:32:37
+ * @Last Modified time: 2017-12-02 16:43:49
  */
 
 /*eslint-disable*/
 
 import Vue from "vue";
-import { createRouter } from "./router";
+import router from "./router";
 import "./assets/reset"; // 全局样式
 import installPlugins from "./plugins";
 import App from "<%= opts.layout.main %>";
@@ -23,7 +23,6 @@ Vue.use(installPlugins);
 
 Vue.config.devtools = process.env.NODE_ENV !== 'production';
 
-const router = createRouter();
 const app = new Vue({
     el: "#app",
     ...App,
