@@ -181,6 +181,27 @@ params: {
 }
 ```
 
+### share - ( 分享 )
+
+调用第三方分享
+
+```json
+{
+	params: {
+		channels: ["wechat", "qq", "weibo", "moments"], // 微信，qq，微博，朋友圈
+		media: {
+			title: "标题",
+			thumb: "缩略图",
+			desc: "描述文字",
+			url: "http://www.baidu.com"
+		}
+	},
+	callback: function(status) {
+		// 成功 1, 失败 0，取消 -1
+	}
+}
+```
+
 ## 离线缓存
 
 离线缓存根据 每个项目的 manifest.json 文件进行更新下载

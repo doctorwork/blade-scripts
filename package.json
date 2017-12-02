@@ -12,7 +12,7 @@
 		"prepare": "npm run release",
 		"test": "jest .",
 		"version":
-			"clgt -f docs/CHANGELOG.md -u http://git.doctorwork.com/web/blade-scripts"
+			"clgt -f docs/CHANGELOG.md -u http://git.doctorwork.com/web/blade-scripts/commits"
 	},
 	"files": ["dist", "index.js"],
 	"author": "luojie",

@@ -24,6 +24,7 @@ vue init doctorwork/blade-vue demo
         - less
             - reset.less
         - style.less
+    - public
     - utils
         index.vue
     - web.config.js     // 全局配置文件
@@ -119,8 +120,6 @@ module.exports = {
 * plugins.global: 全局插件，用于添加第三方库和组件
 * plugins.route: 用于定义 router 的 beforeEach 方法 （afterEach 方法暂未添加 );
 
-* html.analytics html 模板中插入 google analytics 脚本
-
 ```js
 // route插件有两种第一方式， 早期的版本采用了第一种， 第二种方式再 1.1.28后可用
 
@@ -137,6 +136,13 @@ export default function (router) {
 * vuex: 用来定义 vuex store 的文件入口 建议才用默认，模块和方法拆分也建议放在
 	plugins 目录下的 store 文件夹里
 * env: 注入的环境变量 , 分默认和不同环境的变量
+
+```json
+{
+	default: { HOST: "a.com" },
+	qa: { HOSE: "b.com" }
+}
+```
 
 ---
 
