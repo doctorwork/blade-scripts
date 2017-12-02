@@ -1,3 +1,23 @@
+# v1.2.8-b (2017-12-02) #
+
+## Other ##
+
+- 1.2.8-b
+ ([e05dae3](http://git.doctorwork.com/web/blade-scripts/commits/e05dae3), [5752702](http://git.doctorwork.com/web/blade-scripts/commits/5752702))
+- 添加分享文档
+ ([18c9758](http://git.doctorwork.com/web/blade-scripts/commits/18c9758))
+- 修改changelog
+ ([8a361e4](http://git.doctorwork.com/web/blade-scripts/commits/8a361e4))
+- 1.2.9
+ ([9360101](http://git.doctorwork.com/web/blade-scripts/commits/9360101))
+- 修改文档
+ ([280b132](http://git.doctorwork.com/web/blade-scripts/commits/280b132))
+- 1.2.8
+ ([ca7be9b](http://git.doctorwork.com/web/blade-scripts/commits/ca7be9b))
+- 添加changelog
+ ([aed51b8](http://git.doctorwork.com/web/blade-scripts/commits/aed51b8))
+
+
 # 1.2.8 (2017-11-28) #
 
 ## Other ##
