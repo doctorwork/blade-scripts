@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-28 10:49:32
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-28 16:47:11
+ * @Last Modified time: 2017-12-04 11:43:21
  */
 import union from "lodash/union";
 import chokidar from "chokidar";
@@ -148,11 +148,6 @@ export default class Render {
 			port: this.options.port,
 			host: this.options.host,
 			open: true,
-			contentBase: join(
-				this.options.srcDir,
-				this.options.build.contentBase
-			),
-			openPage: this.options.router.base,
 			stats: "errors-only",
 			historyApiFallback:
 				publicPath == "/"

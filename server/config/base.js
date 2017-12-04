@@ -2,7 +2,7 @@
  * @Author: insane.luojie
  * @Date:   2017-09-18 18:36:03
  * @Last Modified by: insane.luojie
- * @Last Modified time: 2017-11-29 17:54:29
+ * @Last Modified time: 2017-12-04 14:57:43
  */
 
 import { resolve, join } from "path";
@@ -20,26 +20,6 @@ import forEach from "lodash/forEach";
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 export default function baseConfig() {
-	let plugins = [
-		// new webpack.IgnorePlugin(/(precomputed)/, /node_modules.+(elliptic)/),
-		new ProgressBarPlugin()
-	];
-
-	const nodeModulesDir = join(__dirname, "..", "..", "..", "node_modules");
-	const HTMLPluginConfig = Object.assign(
-		{
-			filename: "index.html",
-			template: this.options.appTemplatePath,
-			inject: true,
-			title: this.options.title,
-			chunksSortMode: "dependency"
-		},
-		{
-			base: this.options.router.base || "/"
-		},
-		this.options.html
-	);
-
 	let envVars = Object.assign(
 		{
 			PRODUCTION: process.env.NODE_ENV == "production",
@@ -54,16 +34,31 @@ export default function baseConfig() {
 		envs[key] = JSON.stringify(val);
 	});
 
-	plugins = plugins.concat([
+	const HTMLPluginConfig = Object.assign(
+		{
+			filename: "index.html",
+			template: this.options.appTemplatePath,
+			inject: true,
+			title: this.options.title,
+			chunksSortMode: "dependency"
+		},
+		{
+			base: this.options.router.base || "/"
+		},
+		this.options.html
+	);
+
+	let plugins = [
+		new ProgressBarPlugin(),
 		new HTMLPlugin(HTMLPluginConfig),
 		new webpack.DefinePlugin(envs),
-		new webpack.NamedModulesPlugin(),
-		new webpack.NamedChunksPlugin(),
-		// new webpack.HashedModuleIdsPlugin(),
+		// new webpack.NamedChunksPlugin(),
 		new ExtractTextPlugin({
 			filename: "css/style.[contenthash:8].css" // this.options.build.filenames.css
 		})
-	]);
+	];
+
+	const nodeModulesDir = join(__dirname, "..", "..", "..", "node_modules");
 
 	const entry = {
 		main: resolve(this.options.buildDir, "app")
@@ -73,9 +68,6 @@ export default function baseConfig() {
 		plugins.push(
 			new webpack.DllReferencePlugin({
 				context: this.options.rootDir,
-				// The path to the manifest file which maps between
-				// modules included in a bundle and the internal IDs
-				// within that bundle
 				manifest: resolve(this.options.cacheDir, "vendor-manifest.json")
 			})
 		);
@@ -97,8 +89,8 @@ export default function baseConfig() {
 			new webpack.optimize.CommonsChunkPlugin({
 				name: ["runtime"],
 				filename: this.options.dev
-					? "rumtime.[hash:8].js"
-					: "rumtime.[chunkhash:8].js"
+					? "runtime.[hash:8].js"
+					: "runtime.[chunkhash:8].js"
 			}),
 			new CopyWebpackPlugin([
 				{
@@ -145,9 +137,7 @@ export default function baseConfig() {
 		resolveLoader: {
 			modules: ["node_modules", nodeModulesDir]
 		},
-		devtool: this.options.dev
-			? "#module-eval-source-map"
-			: "hidden-source-map"
+		devtool: this.options.dev ? "inline-source-map" : "hidden-source-map"
 	};
 
 	if (this.options.dev && this.options.devtool) {
@@ -168,10 +158,7 @@ export default function baseConfig() {
 		);
 	} else {
 		webpackConfig.plugins.push(
-			new webpack.LoaderOptionsPlugin({
-				minimize: true,
-				debug: false
-			}),
+			new webpack.HashedModuleIdsPlugin(),
 			new webpack.optimize.UglifyJsPlugin({
 				sourceMap: true,
 				output: {
