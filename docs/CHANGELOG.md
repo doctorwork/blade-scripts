@@ -1,3 +1,15 @@
+# v1.2.9 (2017-12-04) #
+
+## Other ##
+
+- 1.2.9
+ ([40b9832](http://git.doctorwork.com/web/blade-scripts/commits/40b9832))
+- 修改sourcemap
+ ([70fa89b](http://git.doctorwork.com/web/blade-scripts/commits/70fa89b))
+- 修改router，取消createRouter方法
+ ([c745c5e](http://git.doctorwork.com/web/blade-scripts/commits/c745c5e))
+
+
 # v1.2.8-b (2017-12-02) #
 
 ## Other ##
