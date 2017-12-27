@@ -62,7 +62,7 @@ function request(method, url, params = {}) {
 	}
 
 	return Promise.resolve(instance(conf)).catch(err => {
-		let res = err.response ? err.response.data : { errmsg: err.message };
+		let res = err.response ? err.response : { errmsg: err.message };
 		return res; // reject at next version
 	});
 }
@@ -92,9 +92,7 @@ export function setup(opts) {
  * @param  {object} options 配置对象
  * @return {object}
  */
-export function createApi(options) {
-	return axios.create(options);
-}
+export const createApi = axios.create;
 
 // 替换url中参数
 function parseUrl(url, params) {
