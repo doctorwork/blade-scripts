@@ -19,8 +19,13 @@ let version = args.version || pkg.version;
 const action = args.action;
 const needOptions = ["host", "project", "token", "dns", "SENTRY_PROJECT_BASE"];
 const README = "可查看文档：https://github.com/doctorwork/blade-scripts/blob/develop/docs/monitor.md";
-let sentry = addons && addons.sentry || {};
-sentry.SENTRY_PROJECT_BASE = args.SENTRY_PROJECT_BASE || env.SENTRY_PROJECT_BASE;
+let sentry = (addons && addons.sentry) || {};
+sentry.SENTRY_PROJECT_BASE = env.SENTRY_PROJECT_BASE;
+
+// 指令参数优先
+needOptions.map(item => {
+    if(args[item]) sentry[item] = args[item];
+});
 
 let getFile = async (file) => {
     let _filePath = resolve(".blade/dist", file);
@@ -149,7 +154,7 @@ if(checkOptions()){
         case 'delete':
             deletRelease();
         break;
-        case 'uploade':
+        case 'upload':
             uploadSourceMap();
         break;
         case 'check':
