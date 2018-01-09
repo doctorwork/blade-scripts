@@ -27,7 +27,7 @@ env : {
     SENTRY_PROJECT_BASE : "https://web-dev.doctorwork.com"  
 }
 ```
-## 指令操作（优先与配置）
+## 指令操作（优先级比web.config配置高）
 ```js
 npm run <blade source> -- --action=<handler> <Param>
 ```
