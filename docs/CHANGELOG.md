@@ -1,3 +1,13 @@
+# v1.2.10 (2017-12-27) #
+
+## Other ##
+
+- 1.2.10
+ ([8de83a5](http://git.doctorwork.com/web/blade-scripts/commits/8de83a5))
+- 修改api返回
+ ([dbc9328](http://git.doctorwork.com/web/blade-scripts/commits/dbc9328))
+
+
 # v1.2.9 (2017-12-04) #
 
 ## Other ##

@@ -135,7 +135,7 @@ export function makeResource(url, actions, makers) {
 		create: { method: "POST", url },
 		update: { method: "PUT", url: url + "/{id}" },
 		delete: { method: "DELETE", url: url + "/{id}" },
-		pacth: { method: "PATCH", url: url + "/{id}" }
+		patch: { method: "PATCH", url: url + "/{id}" }
 	};
 
 	const _makers = makers || {
