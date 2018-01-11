@@ -110,16 +110,21 @@ function maker(method, url) {
 	};
 }
 
+export function method(method) {
+	return function(url) {
+		return maker(method, url);
+	};
+}
+
 // 创建请求方法
-export const [makeGet, makePost, makePut, makeDelete] = [
+export const [makeGet, makePost, makePut, makeDelete, makePatch] = [
 	"get",
 	"post",
 	"put",
-	"delete"
+	"delete",
+	"patch"
 ].map(item => {
-	return function(url) {
-		return maker(item, url);
-	};
+	return method(item);
 });
 
 // 创建resource 请求
@@ -129,14 +134,16 @@ export function makeResource(url, actions, makers) {
 		query: { method: "GET", url },
 		create: { method: "POST", url },
 		update: { method: "PUT", url: url + "/{id}" },
-		delete: { method: "DELETE", url: url + "/{id}" }
+		delete: { method: "DELETE", url: url + "/{id}" },
+		pacth: { method: "PATCH", url: url + "/{id}" }
 	};
 
 	const _makers = makers || {
 		GET: makeGet,
 		POST: makePost,
 		PUT: makePut,
-		DELETE: makeDelete
+		DELETE: makeDelete,
+		PATCH: makePatch
 	};
 
 	function initial(str) {
