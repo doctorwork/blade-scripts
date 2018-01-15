@@ -166,7 +166,7 @@ export function decorateMaker(func, rejector) {
 
 		return function() {
 			const action = inner.apply(null, Array.from(arguments));
-			return action.then(rejector);
+			return action.catch(rejector);
 		};
 	};
 }
