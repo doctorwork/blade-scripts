@@ -1,3 +1,13 @@
+# v1.2.11 (2018-01-11) #
+
+## Other ##
+
+- 1.2.11
+ ([5b49e3a](http://git.doctorwork.com/web/blade-scripts/commits/5b49e3a))
+- 添加patch method
+ ([d83aab6](http://git.doctorwork.com/web/blade-scripts/commits/d83aab6))
+
+
 # v1.2.10 (2017-12-27) #
 
 ## Other ##

@@ -11,6 +11,7 @@ import { isUrl, isPureObject, relativeTo } from "./utils";
 const pkg = require(resolve("package.json"));
 
 const _default = {
+    spec: "1.0"
 	version: pkg.version,
 	mode: "spa",
 	host: "127.0.0.1",

@@ -162,10 +162,9 @@ export function makeResource(url, actions, makers) {
 export function decorateMaker(func, rejector) {
 	return function() {
 		const args = Array.from(arguments);
-		let inner = func.apply(null, args);
 
 		return function() {
-			const action = inner.apply(null, Array.from(arguments));
+			const action = func.apply(null, args)(Array.from(arguments));
 			return action.catch(rejector);
 		};
 	};
