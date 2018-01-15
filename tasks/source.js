@@ -1,3 +1,4 @@
+
 /*
  * @Author: insane.luojie 
  * @Date: 2017-11-01 21:02:47 
@@ -13,90 +14,153 @@ const { resolve, join } = require("path");
 const dir = resolve(".blade/dist");
 const glob = require('glob');
 const pkg = require(resolve('package.json'));
-const { addons } = require(resolve('.', 'web.config.js'));
-const version = pkg.version;
-const source = addons.sentry;
+const { addons, env } = require(resolve('.', 'web.config.js'));
+let version = args.version || pkg.version;
 const action = args.action;
+const needOptions = ["host", "project", "token", "dns", "SENTRY_PROJECT_BASE"];
+const README = "可查看文档：https://github.com/doctorwork/blade-scripts/blob/develop/docs/monitor.md";
+let sentry = (addons && addons.sentry) || {};
+sentry.SENTRY_PROJECT_BASE = env.SENTRY_PROJECT_BASE;
+
+// 指令参数优先
+needOptions.map(item => {
+    if(args[item]) sentry[item] = args[item];
+});
 
 let getFile = async (file) => {
     let _filePath = resolve(".blade/dist", file);
     console.log(_filePath)
     return await fs.createReadStream(_filePath)
 }
+
 let uploadFile = async (file) => {
     let fileStream = await getFile(file);
     request({
         method: 'POST',
-        uri: `${source.host}/api/0/projects/${source.project}/releases/${version}/files/`,
+        uri: `${sentry.host}/api/0/projects/${sentry.project}/releases/${version}/files/`,
         headers : { 
-            Authorization : `Bearer ${source.token}`,
+            Authorization : `Bearer ${sentry.token}`,
             'Content-Type' : 'multipart/form-data;'
         },
         formData: {
-            name: `${source.base}/${file}`,
+            name: `${sentry.SENTRY_PROJECT_BASE}/${file}`,
             file: fileStream
         }
     });
 }
+
 //检查发布版本是否存在
-let checkVersion = async () => {
-    let result = await axios.get(
-        `${source.host}/api/0/projects/${source.project}/releases/${version}/`,
-        {
-            headers : { Authorization : `Bearer ${source.token}` }
-        }
-    );
-    if(result.data && result.data.version) console.log(`>已存在 ${source.project}/release/${version}`);
+let checkVersion = () => {
+    return new Promise((resolve, reject) => {
+        return axios.get(
+            `${sentry.host}/api/0/projects/${sentry.project}/releases/${version}/`,
+            {
+                headers : { Authorization : `Bearer ${sentry.token}` }
+            }
+        ).then(result => {
+            console.log(`>已存在 ${sentry.project}/release/${version}`);
+            resolve(true);
+        }).catch(err => {
+            console.log(`>不存在 ${sentry.project}/release/${version}`);
+            resolve(false);
+        });
+    });
 }
 // 创建release
 let createRelease = async () => {
-    console.log(`> 创建 ${source.project}/release/${version}`);
-    await axios.post(
-        `${source.host}/api/0/projects/${source.project}/releases/`,
-        {
-            version: version
-        }, 
-        {
-            headers : {
-                'Content-Type' : 'application/json',
-                Authorization : `Bearer ${source.token}`
+    let isExist = await checkVersion();
+    if(isExist) return false;
+    console.log(`> 创建中 ${sentry.project}/release/${version}`);
+    return new Promise((resolve, reject) => {
+        axios.post(
+            `${sentry.host}/api/0/projects/${sentry.project}/releases/`,
+            {
+                version: version
+            }, 
+            {
+                headers : {
+                    'Content-Type' : 'application/json',
+                    Authorization : `Bearer ${sentry.token}`
+                }
             }
-        }
-    );
+        ).then(res => {
+            console.log(`> 创建完成 ${sentry.project}/release/${version}`);
+            resolve(true);
+        }).catch(err => {
+            console.log(`> 创建出错 ${sentry.project}/release/${version}`);
+            resolve(false);
+        });
+    });
 }
+
 // 删除release
 let deletRelease = async () => {
-    console.log(`> 删除 ${source.project}/release/${version}`);
-    return await axios.delete(
-        `${source.host}/api/0/projects/${source.project}/releases/${version}/`,
-        {
-            headers : { Authorization : `Bearer ${source.token}` }
-        }
-    );
+    let isExist = await checkVersion();
+    if(!isExist) return false;
+    console.log(`> 删除中 ${sentry.project}/release/${version}`);
+    return new Promise((resolve, reject) => {
+        return axios.delete(
+            `${sentry.host}/api/0/projects/${sentry.project}/releases/${version}/`,
+            {
+                headers : { Authorization : `Bearer ${sentry.token}` }
+            }
+        ).then(res => {
+            console.log(`> 删除完成 ${sentry.project}/release/${version}`);
+            resolve(true);
+        }).catch(err => {
+            console.log(`> 删除出错 ${sentry.project}/release/${version}`);
+            resolve(false);
+        });
+    });
 }
+
 // 上传文件
 let uploadSourceMap = async () => {
-    await deletRelease();
-    await createRelease();
-    console.log(`> 上传 ${source.project}/release/${version}\n`);
+    const isExist = await checkVersion();
+    if(isExist){
+        await deletRelease();
+        await createRelease();
+    }else{
+        await createRelease();
+    }
+    console.log(`> 上传 ${sentry.project}/release/${version}\n`);
     const fileArray = glob.sync('**/*.map', { cwd: dir });
     fileArray.map( async (file) => {
         await uploadFile(file);
     });
 }
 
-switch(action){
-    case 'create' :
-        createRelease();
-    break;
-    case 'delete':
-        deletRelease();
-    break;
-    case 'uploade':
-        uploadSourceMap();
-    break;
-    case 'check':
-        checkVersion();
-    break;
-    default : break;
+// 检查参数是否设置完全
+let checkOptions = () => {
+    let err = [];
+    if(!addons || !sentry){
+        console.error(`>error：请在web.config中配置addons扩展参数！${README}`);
+        return false;
+    }
+    needOptions.map(item => {
+        if(!sentry[item]) err.push(item);
+    });
+    if(err.length) {
+        console.error(`>error：${err.join(",")} is required！${README}`);
+        return false;
+    }
+    else return true;
 }
+if(checkOptions()){
+    switch(action){
+        case 'create' :
+            createRelease();
+        break;
+        case 'delete':
+            deletRelease();
+        break;
+        case 'upload':
+            uploadSourceMap();
+        break;
+        case 'check':
+            checkVersion();
+        break;
+        default : break;
+    }
+}
+
