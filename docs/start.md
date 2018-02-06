@@ -1,8 +1,6 @@
 # 上手
 
-blade-scipts 对 vue 项目的一些常规的配置的写法入口做了封装，再开发过程中，主要关
-注页面，组件，数据，vuex 状态。（理念和代码上借鉴了 next, nuxt 等 ssr 框架的实现
-）
+blade-scipts 对 vue 项目的一些常规的配置的写法入口做了封装，再开发过程中，主要关注页面，组件，数据，vuex 状态。（理念和代码上借鉴了 next, nuxt 等 ssr 框架的实现）
 
 ---
 
@@ -107,15 +105,17 @@ module.exports = {
 ---
 
 * proxy : 和 webpack-dev-server 中 proxy 配置方式一致
-	https://webpack.js.org/configuration/dev-server/#devserver-proxy
+  https://webpack.js.org/configuration/dev-server/#devserver-proxy
 
 * type : 提供了 3 种类型 , (pc|mobile|hybrid) 目前差别不大，正在逐步完善，mobile
-	类型会插入一些针对移动端的优化代码和插件
+  类型会插入一些针对移动端的优化代码和插件
+
+* build.postcss: postcss 配置，PC 端项目建议去掉 postcss-pxtorem;
 
 * title: html-webpack-plugin 的模板文件中的标题
 
 * route: 覆盖单个路由的路径，用于需要给路由添加路由参数 ( 具体参照 路由生成规则
-	)
+  )
 
 * plugins.global: 全局插件，用于添加第三方库和组件
 * plugins.route: 用于定义 router 的 beforeEach 方法 （afterEach 方法暂未添加 );
@@ -134,7 +134,7 @@ export default function (router) {
 
 * router.base: 定义路由的 base 路径
 * vuex: 用来定义 vuex store 的文件入口 建议才用默认，模块和方法拆分也建议放在
-	plugins 目录下的 store 文件夹里
+  plugins 目录下的 store 文件夹里
 * env: 注入的环境变量 , 分默认和不同环境的变量
 
 ```json
@@ -149,4 +149,4 @@ export default function (router) {
 其他配置
 
 * html-webpack-plugin 的模板文件，暂不支持配置，但是可以通过再根目录创建
-	app.html 文件，实现覆盖
+  app.html 文件，实现覆盖
