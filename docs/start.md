@@ -106,14 +106,10 @@ module.exports = {
 
 * proxy : 和 webpack-dev-server 中 proxy 配置方式一致
   https://webpack.js.org/configuration/dev-server/#devserver-proxy
-
 * type : 提供了 3 种类型 , (pc|mobile|hybrid) 目前差别不大，正在逐步完善，mobile
   类型会插入一些针对移动端的优化代码和插件
-
 * build.postcss: postcss 配置，PC 端项目建议去掉 postcss-pxtorem;
-
 * title: html-webpack-plugin 的模板文件中的标题
-
 * route: 覆盖单个路由的路径，用于需要给路由添加路由参数 ( 具体参照 路由生成规则
   )
 
